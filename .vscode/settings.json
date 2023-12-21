@@ -1,0 +1,10 @@
+{
+  "cSpell.words": ["devlulcas", "devmed"],
+  "cSpell.language": "en,pt-BR",
+  "files.exclude": {
+    "**/node_modules/": true,
+    "**/.turbo/": true,
+    "**/.next/": true,
+    "**/dist/": true
+  }
+}
