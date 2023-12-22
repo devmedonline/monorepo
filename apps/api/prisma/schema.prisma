@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// A user is a user that can login to the app
+model User {
+  id          String          @id @unique
+  auth        Auth?
+  posts       Post[]
+  history     HistoryAction[]
+  permissions Permission[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+// Auth is the authentication model that is used to keep track of the user's tokens
+model Auth {
+  id           String   @id @unique
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String   @unique
+  accessToken  String
+  refreshToken String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// A permission is a permission that is given to a user to do something (post:read, post:write, etc)
+model Permission {
+  id        String   @id @unique
+  resource  String
+  action    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users    User[]
+}
+
+// A general category is a generic category that can be used for any type of post / other stuff | most of the time it will be some system of the body
+model GeneralCategory {
+  id        String   @id @unique
+  name      String
+  posts     Post[]
+  thumbnail String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// A post is like a blog post or a news article but most of the time in the app it will be an medical article
+model Post {
+  id                String           @id @unique
+  title             String
+  content           String
+  thumbnail         String?
+  author            User             @relation(fields: [authorId], references: [id])
+  authorId          String           @unique
+  readtime          Int
+  language          String
+  status            String           @default("draft")
+  published         Boolean          @default(false)
+  publishedAt       DateTime
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  generalCategory   GeneralCategory? @relation(fields: [generalCategoryId], references: [id])
+  generalCategoryId String?
+}
+
+// To keep track of all the actions that are being done by the user for audit purposes (action: "post:read", "post:write", etc)
+model HistoryAction {
+  id        String   @id @unique
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  action    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
