@@ -5,5 +5,6 @@ declare namespace NodeJS {
     JWT_REFRESH_TOKEN_KEY: string;
     JWT_COOKIE_NAME: string;
     JWT_REFRESH_COOKIE_NAME: string;
+    FRONTEND_URL: string;
   }
 }

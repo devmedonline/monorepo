@@ -8,7 +8,7 @@ import { JWTPayload } from './entities/jwt-payload.entity';
 
 const EXPIRE_TIME = 20 * 1000;
 
-const ACCESS_TOKEN_EXPIRES_IN = '20s';
+const ACCESS_TOKEN_EXPIRES_IN = '20m';
 const REFRESH_TOKEN_EXPIRES_IN = '7d';
 
 @Injectable()
@@ -30,7 +30,7 @@ export class AuthService {
 
     return {
       user,
-      serviceTokens: {
+      backendTokens: {
         accessToken: await this.jwtService.signAsync(payload, {
           expiresIn: ACCESS_TOKEN_EXPIRES_IN,
           secret: process.env.JWT_SECRET_KEY,

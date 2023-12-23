@@ -28,11 +28,9 @@ export class JWTPayload {
   }
 
   static extractRefreshTokenFromRequest(request: Request): string | undefined {
-    console.log(request.headers);
     const cookie = request.cookies?.[process.env.JWT_REFRESH_COOKIE_NAME];
     if (cookie) return cookie;
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    console.log(type, token);
     return type === 'Refresh' ? token : undefined;
   }
 }

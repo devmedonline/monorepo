@@ -1,4 +1,4 @@
-import { PasswordSecurityChecker } from '@/components/password-security-checker';
+import { RegisterForm } from '@/modules/auth/register-form';
 
 const getMessageFromNestJS = async () => {
   const response = await fetch('http://localhost:3000/api');
@@ -12,7 +12,7 @@ export default async function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <p>{message}</p>
-      <PasswordSecurityChecker />
+      <RegisterForm />
     </main>
   );
 }

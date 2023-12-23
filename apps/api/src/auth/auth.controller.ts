@@ -1,4 +1,5 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UserWithPermissions } from 'src/user/dto/user-with-permissions.dto';
 import { UserService } from 'src/user/user.service';
@@ -20,15 +21,55 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Body() dto: LoginDto) {
-    return await this.authService.login(dto);
+  async login(
+    @Body() dto: LoginDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const user = await this.authService.login(dto);
+
+    response.cookie(
+      process.env.JWT_REFRESH_COOKIE_NAME,
+      user.backendTokens.refreshToken,
+      {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+      },
+    );
+
+    response.cookie(
+      process.env.JWT_COOKIE_NAME,
+      user.backendTokens.accessToken,
+      {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 1000 * 60 * 20, // 20 minutes
+      },
+    );
+
+    return user;
   }
 
   @Post('refresh')
   @CheckRefreshJWT()
-  async refreshToken(@User() user: UserWithPermissions) {
-    console.log('refreshed');
+  async refreshToken(
+    @User() user: UserWithPermissions,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const refresh = await this.authService.refreshToken(user);
 
-    return await this.authService.refreshToken(user);
+    response.cookie(process.env.JWT_REFRESH_COOKIE_NAME, refresh.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+    });
+
+    response.cookie(process.env.JWT_COOKIE_NAME, refresh.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 1000 * 60 * 20, // 20 minutes
+    });
+
+    return refresh;
   }
 }
