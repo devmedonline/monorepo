@@ -13,7 +13,7 @@ model User {
   email       String          @unique
   password    String
   name        String
-  avatar      String         @default("/assets/images/avatars/default.png")
+  avatar      String          @default("/assets/images/avatars/default.png")
   auth        Auth?
   posts       Post[]
   history     HistoryAction[]
@@ -40,17 +40,19 @@ model Permission {
   action    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  users    User[]
+  users     User[]
 }
 
 // A general category is a generic category that can be used for any type of post / other stuff | most of the time it will be some system of the body
 model GeneralCategory {
-  id        String   @id @unique
-  name      String
-  posts     Post[]
-  thumbnail String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String   @id @unique
+  name            String
+  description     String
+  publicAvailable Boolean  @default(false)
+  posts           Post[]
+  thumbnail       String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 // A post is like a blog post or a news article but most of the time in the app it will be an medical article
@@ -63,8 +65,8 @@ model Post {
   authorId          String           @unique
   readtime          Int
   language          String
+  publicAvailable   Boolean          @default(false)
   status            String           @default("draft")
-  published         Boolean          @default(false)
   publishedAt       DateTime
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
