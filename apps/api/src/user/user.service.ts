@@ -43,9 +43,12 @@ export class UserService {
     return user;
   }
 
-  async searchByName(name: string): Promise<UserWithoutPassword[]> {
+  async search(search: string): Promise<UserWithoutPassword[]> {
     const users = await this.prisma.user.findMany({
-      where: { name: { contains: name } },
+      where: {
+        name: { contains: search },
+        OR: [{ email: { contains: search } }],
+      },
     });
 
     return users.map((user) => UserService.toUser(user));
@@ -57,6 +60,11 @@ export class UserService {
     if (!user) return null;
 
     return UserService.toUser(user);
+  }
+
+  async findAll(): Promise<UserWithoutPassword[]> {
+    const users = await this.prisma.user.findMany();
+    return users.map((user) => UserService.toUser(user));
   }
 
   async updateAvatar(id: string, avatar: string): Promise<void> {

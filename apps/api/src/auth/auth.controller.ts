@@ -1,5 +1,6 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
+import { BasicResponseWrapper } from 'src/common/entities/basic-response-wrapper.entity';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UserWithPermissions } from 'src/user/dto/user-with-permissions.dto';
 import { UserService } from 'src/user/user.service';
@@ -15,9 +16,18 @@ export class AuthController {
     private readonly userService: UserService,
   ) {}
 
+  /**
+   * Registers a new user but does not log them in.
+   */
   @Post('register')
   async registerUser(@Body() registerUserDto: CreateUserDto) {
-    return this.userService.create(registerUserDto);
+    const user = await this.userService.create(registerUserDto);
+
+    return new BasicResponseWrapper({
+      success: true,
+      message: 'User created successfully',
+      data: user,
+    });
   }
 
   @Post('login')
@@ -47,7 +57,11 @@ export class AuthController {
       },
     );
 
-    return user;
+    return new BasicResponseWrapper({
+      success: true,
+      message: 'Login successful',
+      data: user,
+    });
   }
 
   @Post('refresh')
@@ -70,6 +84,10 @@ export class AuthController {
       maxAge: 1000 * 60 * 20, // 20 minutes
     });
 
-    return refresh;
+    return new BasicResponseWrapper({
+      success: true,
+      message: 'Refresh successful',
+      data: refresh,
+    });
   }
 }

@@ -8,6 +8,7 @@ import {
   applyDecorators,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { Ban } from 'src/ban/entities/ban.entity';
 import { PrismaService } from 'src/prisma.service';
 import { JWTPayload } from '../entities/jwt-payload.entity';
 
@@ -36,8 +37,17 @@ export class RefreshJwtGuard implements CanActivate {
         where: { id: payload.id },
         include: {
           permissions: true,
+          bans: true,
         },
       });
+
+      if (!user) throw new UnauthorizedException();
+
+      const lastBan = user.bans.at(-1);
+
+      const isBanned = Ban.stillBanned(lastBan);
+
+      if (isBanned) throw new UnauthorizedException("You're banned");
 
       request.user = user;
 

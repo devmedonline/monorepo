@@ -9,17 +9,30 @@ datasource db {
 
 // A user is a user that can login to the app
 model User {
-  id          String          @id @unique
-  email       String          @unique
-  password    String
-  name        String
-  avatar      String          @default("/assets/images/avatars/default.png")
-  auth        Auth?
-  posts       Post[]
-  history     HistoryAction[]
-  permissions Permission[]
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  id               String            @id @unique
+  email            String            @unique
+  password         String
+  name             String
+  avatar           String            @default("/assets/images/avatars/default.png")
+  auth             Auth?
+  posts            Post[]
+  history          HistoryAction[]
+  permissions      Permission[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  bans             Ban[]
+  simulations      Simulation[]
+  simulationPhases SimulationPhase[]
+}
+
+model Ban {
+  id                String    @id @unique
+  user              User      @relation(fields: [userId], references: [id])
+  userId            String
+  banReason         String
+  banTimestamp      DateTime  @default(now())
+  unBanTimestamp    DateTime?
+  banDurationInDays Int?
 }
 
 // Auth is the authentication model that is used to keep track of the user's tokens
@@ -63,11 +76,8 @@ model Post {
   thumbnail         String?
   author            User             @relation(fields: [authorId], references: [id])
   authorId          String           @unique
-  readtime          Int
   language          String
   publicAvailable   Boolean          @default(false)
-  status            String           @default("draft")
-  publishedAt       DateTime
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
   generalCategory   GeneralCategory? @relation(fields: [generalCategoryId], references: [id])
@@ -82,4 +92,48 @@ model HistoryAction {
   action    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// A simulation category is a category that can be used for simulations | most of the time it will be some drug or some disease
+model SimulationCategory {
+  id              String       @id @unique
+  name            String
+  description     String
+  publicAvailable Boolean      @default(false)
+  thumbnail       String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  simulations     Simulation[]
+}
+
+model Simulation {
+  id                   String              @id @unique
+  title                String
+  content              String
+  thumbnail            String?
+  author               User                @relation(fields: [authorId], references: [id])
+  authorId             String              @unique
+  language             String
+  publicAvailable      Boolean             @default(false)
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+  simulationCategory   SimulationCategory? @relation(fields: [simulationCategoryId], references: [id])
+  simulationCategoryId String?
+  simulationPhases     SimulationPhase[]
+}
+
+model SimulationPhase {
+  id              String     @id @unique
+  position        Int
+  title           String
+  content         String
+  thumbnail       String?
+  author          User       @relation(fields: [authorId], references: [id])
+  authorId        String     @unique
+  language        String
+  publicAvailable Boolean    @default(false)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  simulation      Simulation @relation(fields: [simulationId], references: [id])
+  simulationId    String
 }

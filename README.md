@@ -1,31 +1,32 @@
 # MED APP AND API
 
-- [ ] Criar categorias genéricas com thumbail, descrição e nome
-- [ ] Editar categorias genéricas
-- [ ] Ocultar categorias genéricas
-- [ ] Listar categorias genéricas
+- [x] Criar categorias genéricas com thumbail, descrição e nome
+- [x] Editar categorias genéricas
+- [x] Ocultar categorias genéricas
+- [x] Listar categorias genéricas
 
-- [ ] Criar postagens com título, descrição, conteúdo, categoria, thumbnail e tags
-- [ ] Editar postagens
-- [ ] Ocultar postagens
-- [ ] Listar postagens
-- [ ] Listar postagens por categoria
+- [x] Criar postagens com título, descrição, conteúdo, categoria, thumbnail e tags
+- [x] Editar postagens
+- [x] Buscar um em específico com dados completos
+- [x] Ocultar postagens
+- [x] Listar postagens
+- [x] Listar postagens por categoria
 - [ ] Listar postagens por tag
-- [ ] Listar postagens por título e por conteúdo
-- [ ] Listar postagens por autor
+- [x] Listar postagens por título e por conteúdo
+- [x] Listar postagens por autor
 
-- [ ] Criar usuários com avatar, nome, email, senha e permissão
-- [ ] Editar dados pessoais (nome e avatar)
-- [ ] Buscar usuário por id
-- [ ] Buscar usuários por nome, email e permissão
-- [ ] Listar usuários
+- [x] Criar usuários com avatar, nome, email, senha e permissão
+- [x] Editar dados pessoais (nome e avatar)
+- [x] Buscar usuário por id
+- [x] Buscar usuários por nome e email
+- [x] Listar usuários
 
 - [ ] Alterar senha
 - [ ] Recuperar senha
 - [ ] Ativar conta
 - [ ] Alterar email
 - [ ] Recuperar email
-- [ ] Autenticar usuário
+- [x] Autenticar usuário
 - [ ] Desfazer autenticação de usuário
 - [ ] Verificar autenticação/permissionamento/banimento de usuário
 
@@ -33,10 +34,10 @@
 - [ ] Banir usuários
 - [ ] Desfazer banimento de usuários
 
-- [ ] Criar categorias de simulação com thumbail, descrição e nome
-- [ ] Editar categorias de simulação
-- [ ] Ocultar categorias de simulação
-- [ ] Listar categorias de simulação
+- [x] Criar categorias de simulação com thumbail, descrição e nome
+- [x] Editar categorias de simulação
+- [x] Ocultar categorias de simulação
+- [x] Listar categorias de simulação
 
 - [ ] Criar simulações com título, descrição, conteúdo, categoria, thumbnail e tags
 - [ ] Editar simulações
