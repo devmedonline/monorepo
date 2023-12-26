@@ -1,3 +1,4 @@
+import { MailerService } from '@nestjs-modules/mailer';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
@@ -12,6 +13,7 @@ export class UserService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly crypt: Crypto,
+    private readonly mailerService: MailerService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserWithoutPassword> {
@@ -31,6 +33,20 @@ export class UserService {
         id: randomUUID(),
       },
     });
+
+    try {
+      await this.mailerService.sendMail({
+        to: newUser.email,
+        subject: 'Welcome to the app!',
+        template: 'welcome',
+        context: {
+          name: newUser.name,
+          siteName: 'Testing NestJS',
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
     return UserService.toUser(newUser);
   }
