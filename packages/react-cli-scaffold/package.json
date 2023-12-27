@@ -1,5 +1,5 @@
 {
-  "name": "@repo/validation-schemas",
+  "name": "react-cli-scaffold",
   "version": "1.0.0",
   "description": "",
   "exports": {
@@ -17,6 +17,8 @@
     "preview": "pnpm build"
   },
   "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "picocolors": "^1.0.0",
     "typescript": "latest",
     "zod": "^3.22.4"
   },
