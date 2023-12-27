@@ -1,11 +1,11 @@
 import { MailerModule } from '@nestjs-modules/mailer';
-import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { BanModule } from './ban/ban.module';
+import { ReactAdapter } from './email/adapters/react.adapter';
 import { GeneralCategoryModule } from './general-category/general-category.module';
 import { PostModule } from './post/post.module';
 import { PrismaService } from './prisma.service';
@@ -26,11 +26,21 @@ import { UserModule } from './user/user.module';
     SimulationModule,
     SimulationPhaseModule,
     MailerModule.forRoot({
-      transport: 'smtps://user@domain.com:pass@smtp.domain.com',
-      defaults: { from: '"nest-modules" <modules@nestjs.com>' },
+      transport: {
+        host: process.env.SMTP_HOST,
+        port: Number(process.env.SMTP_PORT),
+        secure: process.env.SMTP_SECURE === 'true',
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASSWORD,
+        },
+      },
+      defaults: {
+        from: process.env.SITE_EMAIL,
+      },
       template: {
-        dir: __dirname + 'src/emails/templates',
-        adapter: new HandlebarsAdapter(),
+        dir: __dirname + '/email/templates',
+        adapter: new ReactAdapter(),
         options: { strict: true },
       },
     }),

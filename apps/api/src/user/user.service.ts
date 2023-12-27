@@ -38,10 +38,10 @@ export class UserService {
       await this.mailerService.sendMail({
         to: newUser.email,
         subject: 'Welcome to the app!',
-        template: 'welcome',
+        template: 'wellcome',
         context: {
           name: newUser.name,
-          siteName: 'Testing NestJS',
+          siteName: process.env.SITE_NAME,
         },
       });
     } catch (error) {

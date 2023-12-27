@@ -41,6 +41,12 @@ importers:
       '@prisma/client':
         specifier: 5.7.1
         version: 5.7.1(prisma@5.7.1)
+      '@react-email/components':
+        specifier: 0.0.12
+        version: 0.0.12(@types/react@18.2.45)(react@18.2.0)
+      '@react-email/render':
+        specifier: 0.0.10
+        version: 0.0.10
       '@scalar/nestjs-api-reference':
         specifier: ^0.1.5
         version: 0.1.5(@codemirror/lang-html@6.4.7)(@codemirror/lang-java@6.0.1)(@codemirror/lang-javascript@6.2.1)(@codemirror/lang-json@6.0.1)(@codemirror/lang-python@6.1.3)(@codemirror/language@6.9.3)(@codemirror/legacy-modes@6.3.3)(@codemirror/state@6.3.3)(@codemirror/view@6.22.3)(@lezer/common@1.1.2)(@lezer/highlight@1.2.0)(@lezer/lr@1.3.14)(@uiw/codemirror-themes@4.21.21)(codemirror@6.0.1)(express@4.18.2)(nanoid@5.0.4)(postcss@8.4.32)(typescript@5.3.3)(unified@11.0.4)(vue@3.3.13)
@@ -56,12 +62,18 @@ importers:
       cookie-parser:
         specifier: ^1.4.6
         version: 1.4.6
-      handlebars:
-        specifier: ^4.7.8
-        version: 4.7.8
+      locter:
+        specifier: ^1.2.3
+        version: 1.2.3
       nodemailer:
         specifier: ^6.9.7
         version: 6.9.7
+      react:
+        specifier: ^18
+        version: 18.2.0
+      react-email:
+        specifier: 1.10.0
+        version: 1.10.0
       reflect-metadata:
         specifier: ^0.1.13
         version: 0.1.14
@@ -93,6 +105,9 @@ importers:
       '@types/node':
         specifier: ^20.3.1
         version: 20.10.5
+      '@types/react':
+        specifier: ^18
+        version: 18.2.45
       '@types/supertest':
         specifier: ^2.0.12
         version: 2.0.16
@@ -144,12 +159,6 @@ importers:
 
   apps/web:
     dependencies:
-      '@react-email/components':
-        specifier: 0.0.12
-        version: 0.0.12(@types/react@18.2.45)(react@18.2.0)
-      '@react-email/render':
-        specifier: 0.0.10
-        version: 0.0.10
       next:
         specifier: 14.0.4
         version: 14.0.4(react-dom@18.2.0)(react@18.2.0)
@@ -159,9 +168,6 @@ importers:
       react-dom:
         specifier: ^18
         version: 18.2.0(react@18.2.0)
-      react-email:
-        specifier: 1.10.0
-        version: 1.10.0
     devDependencies:
       '@types/node':
         specifier: ^20
@@ -4956,6 +4962,10 @@ packages:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
 
+  /destr@2.0.2:
+    resolution: {integrity: sha512-65AlobnZMiCET00KaFFjUefxDX0khFA/E4myqZ7a6Sq1yZtR8+FVIvilVX66vF2uobSumxooYZChiRPCKNqhmg==}
+    dev: false
+
   /destroy@1.2.0:
     resolution: {integrity: sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==}
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
@@ -5122,6 +5132,10 @@ packages:
 
   /eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
+
+  /ebec@2.3.0:
+    resolution: {integrity: sha512-bt+0tSL7223VU3PSVi0vtNLZ8pO1AfWolcPPMk2a/a5H+o/ZU9ky0n3A0zhrR4qzJTN61uPsGIO4ShhOukdzxA==}
+    dev: false
 
   /ecdsa-sig-formatter@1.0.11:
     resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==}
@@ -5992,6 +6006,11 @@ packages:
       rimraf: 3.0.2
     dev: true
 
+  /flat@5.0.2:
+    resolution: {integrity: sha512-b6suED+5/3rTpUBdG1gupIl8MPFCAMA0QXwmljLhvCUKcUvdE4gWky9zpuGCcXHOsz4J9wPGNWq6OKpmIzz3hQ==}
+    hasBin: true
+    dev: false
+
   /flatted@3.2.9:
     resolution: {integrity: sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==}
     dev: true
@@ -6368,6 +6387,7 @@ packages:
     optionalDependencies:
       uglify-js: 3.17.4
     dev: false
+    optional: true
 
   /hard-rejection@2.1.0:
     resolution: {integrity: sha512-VIZB+ibDhx7ObhAe7OVtoEbuP4h/MuOTHJ+J8h/eBXotJYl0fBgR72xDFCKgIh22OJZIOVNxBMWuhAr10r8HdA==}
@@ -7626,7 +7646,6 @@ packages:
   /jiti@1.21.0:
     resolution: {integrity: sha512-gFqAIbuKyyso/3G2qhiO2OM6shY6EPP/R0+mkDbyspxKazh8BXDC5FiFsUjlczgdNz/vfra0da2y+aHrusLG/Q==}
     hasBin: true
-    dev: true
 
   /jju@1.4.0:
     resolution: {integrity: sha512-8wb9Yw966OSxApiCt0K3yNJL8pnNeIv+OEq2YMidz4FKP6nonSRoOXc80iXY4JaN2FC11B9qsNmDsm+ZOfMROA==}
@@ -7907,6 +7926,16 @@ packages:
     dependencies:
       p-locate: 5.0.0
     dev: true
+
+  /locter@1.2.3:
+    resolution: {integrity: sha512-ew6nK4ejX+Z4bRvF94mErI38mBxn6Gvi61HL+vEU6X06Pa8RrmwvhmPqCX7784UzdhQ0+qeyYOYp8Rd5mOvh1A==}
+    dependencies:
+      destr: 2.0.2
+      ebec: 2.3.0
+      flat: 5.0.2
+      glob: 10.3.10
+      jiti: 1.21.0
+    dev: false
 
   /lodash.includes@4.3.0:
     resolution: {integrity: sha512-W3Bx6mdkRTGtlJISOvVD/lbqjTlPPUDTMnlXZFnVwi9NKJ6tiAk6LVdlhZMm17VZisqhKcgzpO5Wz91PCt5b0w==}
@@ -11876,7 +11905,9 @@ packages:
 
   /wordwrap@1.0.0:
     resolution: {integrity: sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==}
+    requiresBuild: true
     dev: false
+    optional: true
 
   /wrap-ansi@6.2.0:
     resolution: {integrity: sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==}
