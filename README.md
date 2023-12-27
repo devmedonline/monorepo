@@ -51,3 +51,20 @@
 - [x] Ocultar fases de simulação
 - [x] Listar fases de simulação
 - [x] Trocar posição de fases de simulação
+
+- [ ] Criar quizzes com thumbail, descrição e nome
+- [ ] Editar quizzes
+- [ ] Ocultar quizzes
+- [ ] Listar quizzes
+
+- [ ] Criar questões com título, descrição, conteúdo, quiz relacionado, thumbnail e tags
+- [ ] Editar questões
+- [ ] Ocultar questões
+- [ ] Listar questões por categoria
+- [ ] Listar questões por tag
+- [ ] Listar questões por título e por conteúdo
+
+- [ ] Criar respostas com título, descrição, conteúdo e aceitação
+- [ ] Editar respostas
+- [ ] Ocultar respostas
+- [ ] Listar respostas por questão
