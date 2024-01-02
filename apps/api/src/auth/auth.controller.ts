@@ -90,4 +90,15 @@ export class AuthController {
       data: refresh,
     });
   }
+
+  @Post('logout')
+  async logout(@Res({ passthrough: true }) response: Response) {
+    response.clearCookie(process.env.JWT_REFRESH_COOKIE_NAME);
+    response.clearCookie(process.env.JWT_COOKIE_NAME);
+
+    return new BasicResponseWrapper({
+      success: true,
+      message: 'Logout successful',
+    });
+  }
 }

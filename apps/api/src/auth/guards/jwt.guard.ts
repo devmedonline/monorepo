@@ -4,6 +4,7 @@ import {
   CanActivate,
   createParamDecorator,
   ExecutionContext,
+  HttpException,
   Injectable,
   UnauthorizedException,
   UseGuards,
@@ -12,6 +13,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Ban } from 'src/ban/entities/ban.entity';
 import { PrismaService } from 'src/prisma.service';
 import { UserWithPermissions } from 'src/user/dto/user-with-permissions.dto';
+import { UserService } from 'src/user/user.service';
 import { JWTPayload } from '../entities/jwt-payload.entity';
 
 @Injectable()
@@ -44,16 +46,25 @@ export class JwtGuard implements CanActivate {
 
       if (!user) throw new UnauthorizedException();
 
+      if (!user.verified) throw new UnauthorizedException('Not verified');
+
       const lastBan = user.bans.at(-1);
 
       const isBanned = Ban.stillBanned(lastBan);
 
       if (isBanned) throw new UnauthorizedException("You're banned");
 
-      request.user = user;
+      request.user = {
+        ...UserService.toUser(user),
+        permissions: user.permissions,
+      };
 
       return Boolean(user);
     } catch (err) {
+      if (err instanceof HttpException) {
+        throw err;
+      }
+
       if (err.name === 'TokenExpiredError') {
         throw new UnauthorizedException();
       }

@@ -5,6 +5,7 @@ import { randomUUID } from 'node:crypto';
 import { Crypto } from 'src/auth/crypto';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { EmailVerificationService } from './email-verification.service';
 
 type UserWithoutPassword = Omit<User, 'password'>;
 
@@ -14,6 +15,7 @@ export class UserService {
     private readonly prisma: PrismaService,
     private readonly crypt: Crypto,
     private readonly mailerService: MailerService,
+    private readonly emailVerificationService: EmailVerificationService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserWithoutPassword> {
@@ -34,19 +36,7 @@ export class UserService {
       },
     });
 
-    try {
-      await this.mailerService.sendMail({
-        to: newUser.email,
-        subject: 'Welcome to the app!',
-        template: 'wellcome',
-        context: {
-          name: newUser.name,
-          siteName: process.env.SITE_NAME,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    await this.emailVerificationService.triggerEmailVerification(newUser.email);
 
     return UserService.toUser(newUser);
   }
@@ -105,11 +95,16 @@ export class UserService {
     await this.prisma.user.update({ where: { id }, data: { email } });
   }
 
+  async updateVerified(id: string, verified: boolean): Promise<void> {
+    await this.prisma.user.update({ where: { id }, data: { verified } });
+  }
+
   static toUser(user: User): UserWithoutPassword {
     return {
       id: user.id,
       email: user.email,
       name: user.name,
+      verified: user.verified,
       avatar: user.avatar,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,

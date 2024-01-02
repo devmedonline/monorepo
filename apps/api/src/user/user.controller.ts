@@ -1,12 +1,26 @@
-import { Body, Controller, Get, Patch, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CheckJWT, User } from 'src/auth/guards/jwt.guard';
 import { BasicResponseWrapper } from 'src/common/entities/basic-response-wrapper.entity';
+import { UpdateEmailDto } from './dto/update-email.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UserWithPermissions } from './dto/user-with-permissions.dto';
+import { EmailVerificationService } from './email-verification.service';
 import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly emailVerificationService: EmailVerificationService,
+  ) {}
 
   @Get()
   @CheckJWT()
@@ -82,6 +96,59 @@ export class UserController {
       success: true,
       message: 'Name updated successfully',
       data: updatedUser,
+    });
+  }
+
+  @Patch('update-password')
+  @CheckJWT()
+  async updatePassword(
+    @User() user: UserWithPermissions,
+    @Body() updatePasswordDto: UpdatePasswordDto,
+  ) {
+    await this.userService.updatePassword(user.id, updatePasswordDto.password);
+
+    return new BasicResponseWrapper({
+      success: true,
+      message: 'Password changed successfully',
+    });
+  }
+
+  @Patch('email')
+  @CheckJWT()
+  async updateEmail(
+    @User() user: UserWithPermissions,
+    @Body() body: UpdateEmailDto,
+  ) {
+    const updatedUser = await this.userService.updateEmail(user.id, body.email);
+
+    return new BasicResponseWrapper({
+      success: true,
+      message: 'Email updated successfully',
+      data: updatedUser,
+    });
+  }
+
+  @Post('resend-email-verification')
+  @CheckJWT()
+  async resendEmailVerification(@User() user: UserWithPermissions) {
+    await this.emailVerificationService.triggerEmailVerification(user.email);
+
+    return new BasicResponseWrapper({
+      success: true,
+      message: 'Email verification sent successfully',
+    });
+  }
+
+  @Patch('email-verification/:token')
+  async verifyEmail(@Param('token') token: string) {
+    const userId = await this.emailVerificationService.validateToken(token);
+
+    await this.userService.updateVerified(userId, true);
+
+    return new BasicResponseWrapper({
+      success: true,
+      data: { userId },
+      message: 'Email verified successfully',
     });
   }
 }
