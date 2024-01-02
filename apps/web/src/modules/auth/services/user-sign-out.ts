@@ -1,4 +1,4 @@
-import { apiClient } from "@/modules/http-client/lib/client";
+import { apiClient } from '@/modules/http-client/lib/client';
 
 export type UserSignOutResult = {
   message: string;
@@ -6,11 +6,11 @@ export type UserSignOutResult = {
 
 export async function userSignOut(): Promise<UserSignOutResult> {
   await apiClient.post({
-    path: "/auth/login",
+    path: '/auth/logout',
     guard: (data): data is UserSignOutResult => {
-      return "message" in data;
+      return 'message' in data;
     },
   });
-  
+
   return { message: `Até a próxima!` };
 }

@@ -1,14 +1,20 @@
-import { Button } from "@/shared/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-import { Input } from "@/shared/components/ui/input";
-import { cn } from "@/shared/lib/lib";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ClassValue } from "clsx";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { emailSchema } from "../../schemas/email-schema";
-import { passwordSchema } from "../../schemas/password-schema";
-import { RedirectReasonAlert } from "../redirect-reason-alert";
+import { Button } from '@/shared/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/shared/components/ui/form';
+import { Input } from '@/shared/components/ui/input';
+import { cn } from '@/shared/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ClassValue } from 'clsx';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { emailSchema } from '../../schemas/email-schema';
+import { passwordSchema } from '../../schemas/password-schema';
 
 const formSchema = z.object({
   newEmail: emailSchema,
@@ -32,10 +38,8 @@ export function ChangeEmailForm({ className, onSubmit }: ChangeEmailFormProps) {
         data-testid="user-sign-in-form"
         method="POST"
         onSubmit={form.handleSubmit(onSubmit)}
-        className={cn("w-full space-y-2", className)}
+        className={cn('w-full space-y-2', className)}
       >
-        <RedirectReasonAlert />
-
         <FormField
           control={form.control}
           name="newEmail"
@@ -43,7 +47,11 @@ export function ChangeEmailForm({ className, onSubmit }: ChangeEmailFormProps) {
             <FormItem>
               <FormLabel>Novo e-mail</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="example@gmail.com" {...field} />
+                <Input
+                  type="email"
+                  placeholder="example@gmail.com"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -56,13 +64,18 @@ export function ChangeEmailForm({ className, onSubmit }: ChangeEmailFormProps) {
             <FormItem>
               <FormLabel>Digite sua Senha</FormLabel>
               <FormControl>
-                <Input autoComplete="current-password" type="password" placeholder="********" {...field} />
+                <Input
+                  autoComplete="current-password"
+                  type="password"
+                  placeholder="********"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" loading={form.formState.isSubmitting}>
+        <Button type="submit" className="w-full">
           Alterar e-mail
         </Button>
       </form>

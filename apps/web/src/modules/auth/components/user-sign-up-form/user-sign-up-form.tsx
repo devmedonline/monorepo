@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/shared/components/ui/button';
 import {
   Form,
@@ -9,20 +11,23 @@ import {
 } from '@/shared/components/ui/form';
 import { Input } from '@/shared/components/ui/input';
 import { Separator } from '@/shared/components/ui/separator';
+import { useToast } from '@/shared/components/ui/use-toast';
 import { useVibrateOnFormError } from '@/shared/hooks/use-vibrate-on-form-error';
-import { cn } from '@/shared/lib/lib';
+import { cn } from '@/shared/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ClassValue } from 'clsx';
 import Link from 'next/link';
+import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { signInSchema } from '../../schemas/sign-in-schema';
-import { PasswordRecoveryLink } from '../password-recovery-link';
-import { useCallback } from 'react';
-import { userSignUp } from '../../services/user-sign-up';
 import { useRedirectAfterAuth } from '../../hooks/use-redirect-after-auth';
+import { signInSchema } from '../../schemas/sign-in-schema';
+import { userSignUp } from '../../services/user-sign-up';
+import { PasswordRecoveryLink } from '../password-recovery-link';
 
-const formSchema = signInSchema;
+const formSchema = signInSchema.extend({
+  name: z.string().min(3, { message: 'Nome muito curto' }),
+});
 
 export type UserSignUpFormValues = z.infer<typeof formSchema>;
 
@@ -46,17 +51,12 @@ export function UserSignUpForm({ className }: UserSignUpFormProps) {
       try {
         const userSignUpResult = await userSignUp(values);
 
-        toast({
-          variant: 'success',
-          description: userSignUpResult.message,
-        });
+        toast({ description: userSignUpResult.message });
 
         redirectAfterAuth();
       } catch (error) {
         const errorMessage =
-          error instanceof Error
-            ? error.message
-            : 'Ocorreu um erro ao fazer cadastro';
+          error instanceof Error ? error.message : 'Erro ao fazer cadastro';
 
         toast({
           variant: 'destructive',
@@ -122,11 +122,7 @@ export function UserSignUpForm({ className }: UserSignUpFormProps) {
           )}
         />
 
-        <Button
-          type="submit"
-          className="w-full mt-4"
-          loading={form.formState.isSubmitting}
-        >
+        <Button type="submit" className="w-full mt-4">
           Entrar
         </Button>
 
@@ -136,7 +132,7 @@ export function UserSignUpForm({ className }: UserSignUpFormProps) {
 
         <p>
           Já tem uma conta?{' '}
-          <Link className="underline" href="/entrar">
+          <Link className="underline" href="/login">
             Entrar
           </Link>
         </p>

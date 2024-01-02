@@ -1,8 +1,7 @@
-import { PaginationResponse } from "./pagination";
+import { PaginationResponse } from './pagination';
 
 export class ErrorResponse<E = any> extends Error {
-  // Status fixo para erros
-  status: "error";
+  success: false;
 
   // Códigos de erro mapeados na documentação
   code: string;
@@ -13,23 +12,27 @@ export class ErrorResponse<E = any> extends Error {
   // Erros de validação de campos
   fieldErrors?: Array<E>;
 
-  constructor(options: { code: string; message: string; fieldErrors?: Array<E> }) {
+  constructor(options: {
+    code: string;
+    message: string;
+    fieldErrors?: Array<E>;
+  }) {
     super(options.message);
     this.code = options.code;
     this.message = options.message;
     this.fieldErrors = options.fieldErrors;
-    this.status = "error";
+    this.success = false;
   }
 }
 
 export function isErrorResponse(response: any): response is ErrorResponse {
-  return response.status === "error";
+  return response.success === false;
 }
 
 export type SuccessResponseData = Record<string, any>;
 export class SuccessResponse<T extends SuccessResponseData> {
   // Status fixo para sucesso
-  status: "success";
+  success: true;
 
   // Dados da resposta
   data: T;
@@ -37,15 +40,26 @@ export class SuccessResponse<T extends SuccessResponseData> {
   // Informações de paginação
   pagination: PaginationResponse | null;
 
-  constructor(options: { data: T; pagination?: PaginationResponse | null }) {
+  message: string;
+
+  constructor(options: {
+    data: T;
+    pagination?: PaginationResponse | null;
+    message?: string;
+  }) {
     this.data = options.data;
     this.pagination = options.pagination || null;
-    this.status = "success";
+    this.success = true;
+    this.message = options.message || 'Requisição realizada com sucesso';
   }
 }
 
-export function isSuccessResponse<T extends SuccessResponseData>(response: any): response is SuccessResponse<T> {
-  return response.status === "success";
+export function isSuccessResponse<T extends SuccessResponseData>(
+  response: any
+): response is SuccessResponse<T> {
+  return response.success === true;
 }
 
-export type ApiResponse<T extends SuccessResponseData, E = any> = ErrorResponse<E> | SuccessResponse<T>;
+export type ApiResponse<T extends SuccessResponseData, E = any> =
+  | ErrorResponse<E>
+  | SuccessResponse<T>;

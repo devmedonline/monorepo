@@ -1,15 +1,17 @@
-import { yolo } from "@/shared/lib/yolo";
-import { type UpdatePasswordFormValues } from "../components/update-password-form/update-password-form";
+import { yolo } from '@/shared/lib/yolo';
+import { type UpdatePasswordFormValues } from '../components/update-password-form/update-password-form';
 
 type UpdatePasswordResult = { message: string };
 
-export async function updatePassword(params: UpdatePasswordFormValues): Promise<UpdatePasswordResult> {
+export async function updatePassword(
+  params: UpdatePasswordFormValues
+): Promise<UpdatePasswordResult> {
   await yolo.delay();
   yolo.randomlyThrows();
 
-  console.log("Enviando nova senha:", params);
+  console.log('Enviando nova senha:', params);
 
   return {
-    message: "Senha atualizada com sucesso!",
+    message: 'Senha atualizada com sucesso!',
   };
 }

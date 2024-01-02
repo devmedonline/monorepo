@@ -16,9 +16,9 @@ export async function userSignIn(
     path: '/auth/login',
     init: { body: values },
     guard: (data): data is UserSignInResponse => {
-      return 'accessToken' in data;
+      return 'user' in data;
     },
   });
 
-  return { message: `Bem vindo de volta!` };
+  return { message: response.message };
 }

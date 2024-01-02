@@ -1,14 +1,20 @@
-import { Button } from "@/shared/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-import { Input } from "@/shared/components/ui/input";
-import { useVibrateOnFormError } from "@/shared/hooks/use-vibrate-on-form-error";
-import { cn } from "@/shared/lib/lib";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ClassValue } from "clsx";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { passwordSchema } from "../../schemas/password-schema";
-import { RedirectReasonAlert } from "../redirect-reason-alert";
+import { Button } from '@/shared/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/shared/components/ui/form';
+import { Input } from '@/shared/components/ui/input';
+import { useVibrateOnFormError } from '@/shared/hooks/use-vibrate-on-form-error';
+import { cn } from '@/shared/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ClassValue } from 'clsx';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { passwordSchema } from '../../schemas/password-schema';
 
 const formSchema = z
   .object({
@@ -17,12 +23,12 @@ const formSchema = z
     newPasswordConfirmation: passwordSchema,
   })
   .refine((data) => data.newPassword !== data.oldPassword, {
-    message: "A nova senha não pode ser igual a anterior",
-    path: ["newPassword"],
+    message: 'A nova senha não pode ser igual a anterior',
+    path: ['newPassword'],
   })
   .refine((data) => data.newPassword === data.newPasswordConfirmation, {
-    message: "As senhas não coincidem",
-    path: ["newPasswordConfirmation"],
+    message: 'As senhas não coincidem',
+    path: ['newPasswordConfirmation'],
   });
 
 export type UpdatePasswordFormValues = z.infer<typeof formSchema>;
@@ -32,7 +38,10 @@ type UpdatePasswordFormProps = {
   onSubmit: (values: UpdatePasswordFormValues) => Promise<void>;
 };
 
-export function UpdatePasswordForm({ className, onSubmit }: UpdatePasswordFormProps) {
+export function UpdatePasswordForm({
+  className,
+  onSubmit,
+}: UpdatePasswordFormProps) {
   const form = useForm<UpdatePasswordFormValues>({
     resolver: zodResolver(formSchema),
   });
@@ -45,10 +54,8 @@ export function UpdatePasswordForm({ className, onSubmit }: UpdatePasswordFormPr
         data-testid="update-password-form"
         method="POST"
         onSubmit={form.handleSubmit(onSubmit)}
-        className={cn("w-full space-y-2", className)}
+        className={cn('w-full space-y-2', className)}
       >
-        <RedirectReasonAlert />
-
         <FormField
           control={form.control}
           name="oldPassword"
@@ -56,7 +63,12 @@ export function UpdatePasswordForm({ className, onSubmit }: UpdatePasswordFormPr
             <FormItem>
               <FormLabel>Senha atual</FormLabel>
               <FormControl>
-                <Input autoComplete="current-password" type="password" placeholder="********" {...field} />
+                <Input
+                  autoComplete="current-password"
+                  type="password"
+                  placeholder="********"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -89,7 +101,7 @@ export function UpdatePasswordForm({ className, onSubmit }: UpdatePasswordFormPr
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-fit p-3" loading={form.formState.isSubmitting}>
+        <Button type="submit" className="w-fit p-3">
           Alterar senha
         </Button>
       </form>

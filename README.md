@@ -21,13 +21,13 @@
 - [x] Buscar usuários por nome e email
 - [x] Listar usuários
 
-- [ ] Alterar senha
+- [x] Alterar senha
 - [ ] Recuperar senha
-- [ ] Ativar conta
-- [ ] Alterar email
+- [x] Ativar conta
+- [x] Alterar email
 - [ ] Recuperar email
 - [x] Autenticar usuário
-- [ ] Desfazer autenticação de usuário
+- [x] Desfazer autenticação de usuário
 - [ ] Verificar autenticação/permissionamento/banimento de usuário
 
 - [x] Editar permissões de outros usuários

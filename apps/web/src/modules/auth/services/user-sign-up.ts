@@ -1,18 +1,17 @@
 import { apiClient } from '@/modules/http-client/lib/client';
+import { User } from '@/modules/user/types/user';
 import { UserSignUpFormValues } from '../components/user-sign-up-form';
 
 export type UserSignUpResult = {
   message: string;
 };
 
-type UserSignUpResponse = {
-  message: string;
-};
+type UserSignUpResponse = User
 
 export async function userSignUp(
   values: UserSignUpFormValues
 ): Promise<UserSignUpResult> {
-  await apiClient.post({
+  const response = await apiClient.post({
     path: '/auth/register',
     init: {
       body: {
@@ -22,9 +21,9 @@ export async function userSignUp(
       },
     },
     guard: (data): data is UserSignUpResponse => {
-      return 'message' in data;
+      return 'name' in data;
     },
   });
 
-  return { message: `Bem vindo ${values.firstName}!` };
+  return { message: `Bem vindo ${response.data.name}!` };
 }

@@ -1,12 +1,20 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/shared/components/ui/dialog";
-import { useToast } from "@/shared/components/ui/use-toast";
-import { useState } from "react";
-import { ChangeEmailForm, ChangeEmailFormValues } from ".";
-import { changeEmail } from "../../services/change-email";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/shared/components/ui/dialog';
+import { useToast } from '@/shared/components/ui/use-toast';
+import { useState } from 'react';
+import { ChangeEmailForm, ChangeEmailFormValues } from '.';
+import { changeEmail } from '../../services/change-email';
 
 type ChangeEmailFormDialogTriggerProps = { children: React.ReactNode };
 
-export function ChangeEmailFormDialogTrigger({ children }: ChangeEmailFormDialogTriggerProps) {
+export function ChangeEmailFormDialogTrigger({
+  children,
+}: ChangeEmailFormDialogTriggerProps) {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
 
@@ -15,17 +23,17 @@ export function ChangeEmailFormDialogTrigger({ children }: ChangeEmailFormDialog
       const result = await changeEmail(values);
 
       toast({
-        title: "Sucesso!",
+        title: 'Sucesso!',
         description: result.message,
-        variant: "success",
       });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Um erro ocorreu!";
+      const errorMessage =
+        error instanceof Error ? error.message : 'Um erro ocorreu!';
 
       toast({
-        title: "Algo deu errado! Tente novamente.",
+        title: 'Algo deu errado! Tente novamente.',
         description: errorMessage,
-        variant: "destructive",
+        variant: 'destructive',
       });
     }
     setOpen(false);
