@@ -38,9 +38,6 @@ importers:
       '@nestjs/swagger':
         specifier: ^7.1.17
         version: 7.1.17(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.14)
-      '@prisma/client':
-        specifier: 5.7.1
-        version: 5.7.1(prisma@5.7.1)
       '@react-email/components':
         specifier: 0.0.12
         version: 0.0.12(@types/react@18.2.45)(react@18.2.0)
@@ -62,6 +59,9 @@ importers:
       cookie-parser:
         specifier: ^1.4.6
         version: 1.4.6
+      db:
+        specifier: workspace:*
+        version: link:../../packages/db
       locter:
         specifier: ^1.2.3
         version: 1.2.3
@@ -132,9 +132,6 @@ importers:
       prettier:
         specifier: ^3.0.0
         version: 3.1.1
-      prisma:
-        specifier: ^5.7.1
-        version: 5.7.1
       source-map-support:
         specifier: ^0.5.21
         version: 0.5.21
@@ -280,8 +277,8 @@ importers:
         specifier: ^0.8.0
         version: 0.8.0(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0)
       zod:
-        specifier: link:@hookform/resolvers/zod
-        version: link:@hookform/resolvers/zod
+        specifier: ^3.22.4
+        version: 3.22.4
     devDependencies:
       '@types/node':
         specifier: ^20
@@ -295,6 +292,9 @@ importers:
       autoprefixer:
         specifier: ^10.0.1
         version: 10.4.16(postcss@8.4.32)
+      db:
+        specifier: workspace:*
+        version: link:../../packages/db
       eslint:
         specifier: ^8
         version: 8.56.0
@@ -311,6 +311,22 @@ importers:
         specifier: ^5
         version: 5.3.3
 
+  packages/db:
+    dependencies:
+      '@prisma/client':
+        specifier: 5.7.1
+        version: 5.7.1(prisma@5.7.1)
+    devDependencies:
+      prisma:
+        specifier: ^5.7.1
+        version: 5.7.1
+      tsup:
+        specifier: ^8.0.1
+        version: 8.0.1(typescript@5.3.3)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
   packages/react-cli-scaffold:
     dependencies:
       '@clack/prompts':
@@ -319,22 +335,6 @@ importers:
       picocolors:
         specifier: ^1.0.0
         version: 1.0.0
-      typescript:
-        specifier: latest
-        version: 5.3.3
-      zod:
-        specifier: ^3.22.4
-        version: 3.22.4
-    devDependencies:
-      '@types/node':
-        specifier: ^20.10.5
-        version: 20.10.5
-      tsup:
-        specifier: ^8.0.1
-        version: 8.0.1(typescript@5.3.3)
-
-  packages/validation-schemas:
-    dependencies:
       typescript:
         specifier: latest
         version: 5.3.3
