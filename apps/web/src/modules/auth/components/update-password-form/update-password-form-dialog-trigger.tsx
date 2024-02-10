@@ -17,7 +17,6 @@ export function UpdatePasswordFormDialogTrigger({ children }: UpdatePasswordForm
       toast({
         title: "Sucesso!",
         description: result.message,
-        variant: "success",
       });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Um erro ocorreu!";
