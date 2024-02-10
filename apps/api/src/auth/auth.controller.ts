@@ -24,8 +24,6 @@ export class AuthController {
     const user = await this.userService.create(registerUserDto);
 
     return new BasicResponseWrapper({
-      success: true,
-      message: 'User created successfully',
       data: user,
     });
   }
@@ -58,8 +56,6 @@ export class AuthController {
     );
 
     return new BasicResponseWrapper({
-      success: true,
-      message: 'Login successful',
       data: user,
     });
   }
@@ -85,8 +81,6 @@ export class AuthController {
     });
 
     return new BasicResponseWrapper({
-      success: true,
-      message: 'Refresh successful',
       data: refresh,
     });
   }
@@ -97,8 +91,7 @@ export class AuthController {
     response.clearCookie(process.env.JWT_COOKIE_NAME);
 
     return new BasicResponseWrapper({
-      success: true,
-      message: 'Logout successful',
+      data: 'Saiu com sucesso!',
     });
   }
 }

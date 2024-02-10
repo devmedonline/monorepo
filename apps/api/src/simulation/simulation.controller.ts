@@ -29,11 +29,7 @@ export class SimulationController {
       createSimulationDto,
     );
 
-    return new BasicResponseWrapper({
-      message: 'Simulation created successfully',
-      data: simulation,
-      success: true,
-    });
+    return new BasicResponseWrapper({ data: simulation });
   }
 
   @Get()
@@ -48,22 +44,14 @@ export class SimulationController {
       simulationCategoryId,
     });
 
-    return new BasicResponseWrapper({
-      message: 'Simulations fetched successfully',
-      data: simulations,
-      success: true,
-    });
+    return new BasicResponseWrapper({ data: simulations });
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const simulationWithPhases = await this.simulationService.findOne(id);
 
-    return new BasicResponseWrapper({
-      message: 'Simulation fetched successfully',
-      data: simulationWithPhases,
-      success: true,
-    });
+    return new BasicResponseWrapper({ data: simulationWithPhases });
   }
 
   @Patch(':id')
@@ -76,11 +64,7 @@ export class SimulationController {
       updateSimulationDto,
     );
 
-    return new BasicResponseWrapper({
-      message: 'Simulation updated successfully',
-      data: updatedSimulation,
-      success: true,
-    });
+    return new BasicResponseWrapper({ data: updatedSimulation });
   }
 
   @Patch(':id/toggle-public-availability')
@@ -88,10 +72,6 @@ export class SimulationController {
     const updateSimulation =
       await this.simulationService.togglePublicAvailability(id);
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Simulation updated successfully',
-      data: updateSimulation,
-    });
+    return new BasicResponseWrapper({ data: updateSimulation });
   }
 }

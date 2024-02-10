@@ -26,11 +26,7 @@ export class PostController {
   ) {
     const post = await this.postService.create(user.id, createPostDto);
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Post created successfully',
-      data: post,
-    });
+    return new BasicResponseWrapper({ data: post });
   }
 
   @Get()
@@ -48,11 +44,7 @@ export class PostController {
       publicAvailable,
     });
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Posts fetched successfully',
-      data: posts,
-    });
+    return new BasicResponseWrapper({ data: posts });
   }
 
   @Get()
@@ -68,22 +60,14 @@ export class PostController {
       search,
     });
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Posts fetched successfully',
-      data: posts,
-    });
+    return new BasicResponseWrapper({ data: posts });
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const post = await this.postService.findOne(id);
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Post fetched successfully',
-      data: post,
-    });
+    return new BasicResponseWrapper({ data: post });
   }
 
   @Patch(':id')
@@ -91,11 +75,7 @@ export class PostController {
   async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
     const updatedPost = await this.postService.update(id, updatePostDto);
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Post updated successfully',
-      data: updatedPost,
-    });
+    return new BasicResponseWrapper({ data: updatedPost });
   }
 
   @Patch(':id/toggle-public-availability')
@@ -103,10 +83,6 @@ export class PostController {
   async togglePublicAvailability(@Param('id') id: string) {
     const updatedPost = await this.postService.togglePublicAvailability(id);
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Post updated successfully',
-      data: updatedPost,
-    });
+    return new BasicResponseWrapper({ data: updatedPost });
   }
 }

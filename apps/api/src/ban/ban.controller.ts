@@ -18,12 +18,7 @@ export class BanController {
   @Post()
   async banUser(@Body() createBanDto: CreateBanDto) {
     const ban = await this.banService.banUser(createBanDto);
-
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'User banned successfully',
-      data: ban,
-    });
+    return new BasicResponseWrapper({ data: ban });
   }
 
   @Get()
@@ -32,33 +27,18 @@ export class BanController {
     @Query('reason') reason: string,
   ) {
     const bans = await this.banService.findAll({ userId, reason });
-
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Bans fetched successfully',
-      data: bans,
-    });
+    return new BasicResponseWrapper({ data: bans });
   }
 
   @Get('user')
   async listUserBans(@Query('userId') userId: string) {
     const bans = await this.banService.listUserBans(userId);
-
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Bans fetched successfully',
-      data: bans,
-    });
+    return new BasicResponseWrapper({ data: bans });
   }
 
   @Delete(':userId')
   async removeBanById(@Param('userId') userId: string) {
     const removedBan = await this.banService.unBanUser(userId);
-
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'User unbanned successfully',
-      data: removedBan,
-    });
+    return new BasicResponseWrapper({ data: removedBan });
   }
 }

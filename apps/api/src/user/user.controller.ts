@@ -27,11 +27,7 @@ export class UserController {
   async findAll() {
     const users = await this.userService.findAll();
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Users fetched successfully',
-      data: users,
-    });
+    return new BasicResponseWrapper({ data: users });
   }
 
   @Get('search')
@@ -39,31 +35,19 @@ export class UserController {
   async search(@Query('search') name: string) {
     const users = await this.userService.search(name);
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Users fetched successfully',
-      data: users,
-    });
+    return new BasicResponseWrapper({ data: users });
   }
 
   @Get('me')
   @CheckJWT()
   me(@User() user: UserWithPermissions) {
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'User fetched successfully',
-      data: user,
-    });
+    return new BasicResponseWrapper({ data: user });
   }
 
   @Get('permissions')
   @CheckJWT()
   permissions(@User() user: UserWithPermissions) {
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Permissions fetched successfully',
-      data: user.permissions,
-    });
+    return new BasicResponseWrapper({ data: user.permissions });
   }
 
   @Patch('avatar')
@@ -77,11 +61,7 @@ export class UserController {
       body.avatar,
     );
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Avatar updated successfully',
-      data: updatedUser,
-    });
+    return new BasicResponseWrapper({ data: updatedUser });
   }
 
   @Patch('name')
@@ -92,11 +72,7 @@ export class UserController {
   ) {
     const updatedUser = await this.userService.updateName(user.id, body.name);
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Name updated successfully',
-      data: updatedUser,
-    });
+    return new BasicResponseWrapper({ data: updatedUser });
   }
 
   @Patch('update-password')
@@ -107,10 +83,7 @@ export class UserController {
   ) {
     await this.userService.updatePassword(user.id, updatePasswordDto.password);
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Password changed successfully',
-    });
+    return new BasicResponseWrapper({ data: 'Senha atualizada com sucesso!' });
   }
 
   @Patch('email')
@@ -121,11 +94,7 @@ export class UserController {
   ) {
     const updatedUser = await this.userService.updateEmail(user.id, body.email);
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Email updated successfully',
-      data: updatedUser,
-    });
+    return new BasicResponseWrapper({ data: updatedUser });
   }
 
   @Post('resend-email-verification')
@@ -134,8 +103,7 @@ export class UserController {
     await this.emailVerificationService.triggerEmailVerification(user.email);
 
     return new BasicResponseWrapper({
-      success: true,
-      message: 'Email verification sent successfully',
+      data: 'E-mail de verificação enviado! Cheque sua caixa de e-mail',
     });
   }
 
@@ -145,10 +113,6 @@ export class UserController {
 
     await this.userService.updateVerified(userId, true);
 
-    return new BasicResponseWrapper({
-      success: true,
-      data: { userId },
-      message: 'Email verified successfully',
-    });
+    return new BasicResponseWrapper({ data: { userId } });
   }
 }

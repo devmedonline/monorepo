@@ -32,11 +32,7 @@ export class SimulationPhaseController {
       createSimulationPhaseDto,
     );
 
-    return new BasicResponseWrapper({
-      message: 'Simulation phase created successfully',
-      data: simulationPhase,
-      success: true,
-    });
+    return new BasicResponseWrapper({ data: simulationPhase });
   }
 
   @Get()
@@ -46,11 +42,7 @@ export class SimulationPhaseController {
       publicallyAvailable: true,
     });
 
-    return new BasicResponseWrapper({
-      message: 'Simulation phases fetched successfully',
-      data: simulations,
-      success: true,
-    });
+    return new BasicResponseWrapper({ data: simulations });
   }
 
   @Get('all')
@@ -63,22 +55,14 @@ export class SimulationPhaseController {
       publicallyAvailable: undefined,
     });
 
-    return new BasicResponseWrapper({
-      message: 'Simulation phases fetched successfully',
-      data: simulations,
-      success: true,
-    });
+    return new BasicResponseWrapper({ data: simulations });
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const simulationPhase = await this.simulationPhaseService.findOne(id);
 
-    return new BasicResponseWrapper({
-      message: 'Simulation phase fetched successfully',
-      data: simulationPhase,
-      success: true,
-    });
+    return new BasicResponseWrapper({ data: simulationPhase });
   }
 
   @Patch(':id')
@@ -92,11 +76,7 @@ export class SimulationPhaseController {
       updateSimulationPhaseDto,
     );
 
-    return new BasicResponseWrapper({
-      message: 'Simulation phase updated successfully',
-      data: updateSimulationPhase,
-      success: true,
-    });
+    return new BasicResponseWrapper({ data: updateSimulationPhase });
   }
 
   @Patch(':id/toggle-public-availability')
@@ -105,11 +85,7 @@ export class SimulationPhaseController {
     const updateSimulation =
       await this.simulationPhaseService.togglePublicAvailability(id);
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Simulation phase updated successfully',
-      data: updateSimulation,
-    });
+    return new BasicResponseWrapper({ data: updateSimulation });
   }
 
   @Patch('/swap/')
@@ -120,10 +96,6 @@ export class SimulationPhaseController {
       swap.simulationPhaseToSwapId,
     );
 
-    return new BasicResponseWrapper({
-      message: 'Simulation phases swapped successfully',
-      data: simulationPhases,
-      success: true,
-    });
+    return new BasicResponseWrapper({ data: simulationPhases });
   }
 }

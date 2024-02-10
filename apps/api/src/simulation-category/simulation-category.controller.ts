@@ -26,33 +26,21 @@ export class SimulationCategoryController {
       createSimulationCategoryDto,
     );
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Simulation category created successfully',
-      data: simulationCategory,
-    });
+    return new BasicResponseWrapper({ data: simulationCategory });
   }
 
   @Get()
   async findAll() {
     const simulationCategories = await this.simulationCategoryService.findAll();
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Simulation categories fetched successfully',
-      data: simulationCategories,
-    });
+    return new BasicResponseWrapper({ data: simulationCategories });
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const simulationCategory = await this.simulationCategoryService.findOne(id);
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Simulation category fetched successfully',
-      data: simulationCategory,
-    });
+    return new BasicResponseWrapper({ data: simulationCategory });
   }
 
   @Get('search')
@@ -60,11 +48,7 @@ export class SimulationCategoryController {
     const simulationCategories =
       await this.simulationCategoryService.search(search);
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Simulation categories fetched successfully',
-      data: simulationCategories,
-    });
+    return new BasicResponseWrapper({ data: simulationCategories });
   }
 
   @Patch(':id')
@@ -77,11 +61,7 @@ export class SimulationCategoryController {
       updateSimulationCategoryDto,
     );
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Simulation category updated successfully',
-      data: updatedSimulationCategory,
-    });
+    return new BasicResponseWrapper({ data: updatedSimulationCategory });
   }
 
   @Patch(':id/toggle-public-availability')
@@ -89,10 +69,6 @@ export class SimulationCategoryController {
     const updateSimulationCategory =
       await this.simulationCategoryService.togglePublicAvailability(id);
 
-    return new BasicResponseWrapper({
-      success: true,
-      message: 'Simulation category updated successfully',
-      data: updateSimulationCategory,
-    });
+    return new BasicResponseWrapper({ data: updateSimulationCategory });
   }
 }
