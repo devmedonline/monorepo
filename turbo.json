@@ -23,6 +23,9 @@
       "dependsOn": ["build"],
       "cache": true,
       "outputs": ["dist"]
+    },
+    "typecheck": {
+      "cache": false
     }
   }
 }
