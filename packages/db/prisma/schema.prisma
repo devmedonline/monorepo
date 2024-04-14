@@ -15,7 +15,6 @@ model User {
   name             String
   avatar           String            @default("/assets/images/avatars/default.png")
   verified         Boolean           @default(false)
-  auth             Auth?
   posts            Post[]
   history          HistoryAction[]
   permissions      Permission[]
@@ -27,6 +26,7 @@ model User {
   actionTokens     ActionToken[]
 }
 
+// A ban is a ban that is given to a user
 model Ban {
   id                String    @id @unique
   user              User      @relation(fields: [userId], references: [id])
@@ -37,22 +37,10 @@ model Ban {
   banDurationInDays Int?
 }
 
-// Auth is the authentication model that is used to keep track of the user's tokens
-model Auth {
-  id           String   @id @unique
-  user         User     @relation(fields: [userId], references: [id])
-  userId       String   @unique
-  accessToken  String
-  refreshToken String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
-
 // A permission is a permission that is given to a user to do something (post:read, post:write, etc)
 model Permission {
   id        String   @id @unique
-  resource  String
-  action    String
+  name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   users     User[]
@@ -84,6 +72,7 @@ model Post {
   updatedAt         DateTime         @updatedAt
   generalCategory   GeneralCategory? @relation(fields: [generalCategoryId], references: [id])
   generalCategoryId String?
+  tags              Tag[]
 }
 
 // To keep track of all the actions that are being done by the user for audit purposes (action: "post:read", "post:write", etc)
@@ -122,6 +111,7 @@ model Simulation {
   simulationCategory   SimulationCategory? @relation(fields: [simulationCategoryId], references: [id])
   simulationCategoryId String?
   simulationPhases     SimulationPhase[]
+  tags                 Tag[]
 }
 
 model SimulationPhase {
@@ -148,4 +138,13 @@ model ActionToken {
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Tag {
+  id          String       @id @unique
+  name        String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  posts       Post[]
+  simulations Simulation[]
 }
