@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
 import * as cookieParser from 'cookie-parser';
+import * as csurf from 'csurf';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -13,9 +14,12 @@ async function bootstrap() {
   app.enableCors({
     origin: [process.env.FRONTEND_URL],
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   });
 
   app.use(cookieParser());
+
+  app.use(csurf());
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -26,8 +30,8 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('API example')
-    .setDescription('The API description')
+    .setTitle('Docs Med App')
+    .setDescription('A descrição da API do Med App')
     .setVersion('1.0')
     .addTag('example')
     .build();
@@ -37,12 +41,24 @@ async function bootstrap() {
   app.use(
     '/api/reference',
     apiReference({
+      baseServerURL: process.env.API_URL,
+      darkMode: true,
+      theme: 'kepler',
+      showSidebar: true,
+      searchHotKey: 'k',
+      layout: 'classic',
+      hideModels: true,
+      metaData: {
+        title: 'Docs Med App',
+        description: 'A descrição da API do Med App',
+        author: '@devlulcas',
+      },
       spec: {
         content: document,
       },
     }),
   );
 
-  await app.listen(2309);
+  await app.listen(process.env.PORT);
 }
 bootstrap();

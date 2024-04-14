@@ -37,7 +37,7 @@ export class AuthService {
         }),
         refreshToken: await this.jwtService.signAsync(payload, {
           expiresIn: REFRESH_TOKEN_EXPIRES_IN,
-          secret: process.env.JWT_REFRESH_TOKEN_KEY,
+          secret: process.env.JWT_REFRESH_TOKEN_SECRET_KEY,
         }),
         expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME),
       },
@@ -68,7 +68,7 @@ export class AuthService {
       }),
       refreshToken: await this.jwtService.signAsync(payload, {
         expiresIn: REFRESH_TOKEN_EXPIRES_IN,
-        secret: process.env.JWT_REFRESH_TOKEN_KEY,
+        secret: process.env.JWT_REFRESH_TOKEN_SECRET_KEY,
       }),
       expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME),
     };

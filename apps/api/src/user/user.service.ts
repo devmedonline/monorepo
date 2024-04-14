@@ -1,4 +1,3 @@
-import { MailerService } from '@nestjs-modules/mailer';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
@@ -14,7 +13,6 @@ export class UserService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly crypt: Crypto,
-    private readonly mailerService: MailerService,
     private readonly emailVerificationService: EmailVerificationService,
   ) {}
 

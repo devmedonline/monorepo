@@ -22,10 +22,7 @@ export class AuthController {
   @Post('register')
   async registerUser(@Body() registerUserDto: CreateUserDto) {
     const user = await this.userService.create(registerUserDto);
-
-    return new BasicResponseWrapper({
-      data: user,
-    });
+    return new BasicResponseWrapper({ data: user });
   }
 
   @Post('login')
@@ -35,25 +32,7 @@ export class AuthController {
   ) {
     const user = await this.authService.login(dto);
 
-    response.cookie(
-      process.env.JWT_REFRESH_COOKIE_NAME,
-      user.backendTokens.refreshToken,
-      {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-      },
-    );
-
-    response.cookie(
-      process.env.JWT_COOKIE_NAME,
-      user.backendTokens.accessToken,
-      {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 1000 * 60 * 20, // 20 minutes
-      },
-    );
+    this.setCookies(response, user.backendTokens);
 
     return new BasicResponseWrapper({
       data: user,
@@ -68,17 +47,7 @@ export class AuthController {
   ) {
     const refresh = await this.authService.refreshToken(user);
 
-    response.cookie(process.env.JWT_REFRESH_COOKIE_NAME, refresh.refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-    });
-
-    response.cookie(process.env.JWT_COOKIE_NAME, refresh.accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 20, // 20 minutes
-    });
+    this.setCookies(response, refresh);
 
     return new BasicResponseWrapper({
       data: refresh,
@@ -92,6 +61,23 @@ export class AuthController {
 
     return new BasicResponseWrapper({
       data: 'Saiu com sucesso!',
+    });
+  }
+
+  private setCookies(
+    response: Response,
+    tokens: { accessToken: string; refreshToken: string },
+  ) {
+    response.cookie(process.env.JWT_COOKIE_NAME, tokens.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 1000 * 60 * 20, // 20 minutes
+    });
+
+    response.cookie(process.env.JWT_REFRESH_COOKIE_NAME, tokens.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
     });
   }
 }
