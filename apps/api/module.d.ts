@@ -10,12 +10,9 @@ declare namespace NodeJS {
     API_URL: string;
     SITE_NAME: string;
     SITE_EMAIL: string;
-
-    MG_API_KEY: string;
-    MG_DOMAIN: string;
-    MG_FROM_EMAIL: string;
-    MG_FROM_NAME: string;
-    MG_API_USERNAME: string;
-    MG_API_ENDPOINT: string;
+    MAILER_API_KEY: string;
+    MAILER_API_DOMAIN: string;
+    MAILER_DOMAIN: string;
+    MAILER_API_ENDPOINT: string;
   }
 }

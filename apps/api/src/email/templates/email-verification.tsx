@@ -5,13 +5,11 @@ React;
 
 type EmailVerificationProps = {
   name: string;
-  siteName: string;
   token: string;
 };
 
 export default function EmailVerification({
   name,
-  siteName,
   token,
 }: EmailVerificationProps) {
   return (
@@ -23,7 +21,10 @@ export default function EmailVerification({
 
         <p>
           Seja bem-vindo ao{' '}
-          <strong className="text-gray-900 font-bold">{siteName}</strong>!
+          <strong className="text-gray-900 font-bold">
+            {process.env.SITE_NAME}
+          </strong>
+          !
         </p>
 
         <p>

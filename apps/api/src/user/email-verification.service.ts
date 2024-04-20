@@ -6,6 +6,8 @@ import {
 import { ActionToken } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
 import { EmailService } from 'src/email/email.service';
+import { EmailMessage } from 'src/email/entities/email.entity';
+import EmailVerification from 'src/email/templates/email-verification';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -20,7 +22,7 @@ export class EmailVerificationService {
 
   async triggerEmailVerification(email: string): Promise<void> {
     const user = await this.prisma.user.findUnique({
-      select: { id: true },
+      select: { id: true, name: true },
       where: { email: email },
     });
 
@@ -31,7 +33,13 @@ export class EmailVerificationService {
     const token = await this.generateToken(user.id);
 
     try {
-      await this.mailerService.sendEmailVerification(email, token);
+      const message = new EmailMessage(
+        { email, name: user.name },
+        'Verifique seu e-mail',
+        EmailVerification({ name: user.name, token }),
+      );
+
+      await this.mailerService.sendEmail(message);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

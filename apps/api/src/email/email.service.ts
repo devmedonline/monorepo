@@ -1,50 +1,56 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { render } from '@react-email/components';
-import { MailgunService } from 'nestjs-mailgun';
-import EmailVerification from './templates/email-verification';
+import { Injectable } from '@nestjs/common';
+import { EmailMessage } from './entities/email.entity';
 
 @Injectable()
 export class EmailService {
-  constructor(
-    private readonly mailerService: MailgunService,
-    private readonly domain = process.env.MG_DOMAIN,
-  ) {}
-
-  async sendEmailVerification(email: string, token: string) {
-    try {
-      await this.mailerService.createEmail(this.domain, {
-        to: email,
-        subject: 'Verify your email',
-        html: render(
-          EmailVerification({
-            name: email,
-            siteName: process.env.SITE_NAME,
-            token,
-          }),
-        ),
-        context: {
-          siteName: process.env.SITE_NAME,
-          token,
+  async sendEmail(message: EmailMessage): Promise<string[]> {
+    const payload = {
+      to: [
+        {
+          email: message.to.email,
+          name: message.to.name,
         },
-      });
-    } catch (error) {
-      throw new InternalServerErrorException(error);
-    }
-  }
+      ],
+      from: {
+        email: message.from.email,
+        name: message.from.name,
+      },
+      subject: message.subject,
+      html: message.body,
+      category: 'email',
+    };
 
-  async sendPasswordReset(email: string, token: string) {
-    try {
-      await this.mailerService.createEmail(this.domain, {
-        to: email,
-        subject: 'Reset your password',
-        html: `<p>Click <a href="${process.env.FRONTEND_URL}/reset-password?token=${token}">here</a> to reset your password</p>`,
-        context: {
-          siteName: process.env.SITE_NAME,
-          token,
-        },
-      });
-    } catch (error) {
-      throw new InternalServerErrorException(error);
+    const init: RequestInit = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Api-Token': process.env.MAILER_API_KEY,
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(payload),
+    };
+
+    const response = await fetch(process.env.MAILER_API_ENDPOINT, init);
+
+    if (!response.ok) {
+      const errorResponse: EmailErrorResponse = await response.json();
+      throw new Error(
+        'Failed to send email: ' + errorResponse.errors.join(', '),
+      );
     }
+
+    const successResponse: EmailSuccessResponse = await response.json();
+
+    return successResponse.message_ids;
   }
 }
+
+type EmailSuccessResponse = {
+  success: true;
+  message_ids: string[];
+};
+
+type EmailErrorResponse = {
+  success: false;
+  errors: string[];
+};

@@ -3,7 +3,6 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
 import * as cookieParser from 'cookie-parser';
-import * as csurf from 'csurf';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -18,8 +17,6 @@ async function bootstrap() {
   });
 
   app.use(cookieParser());
-
-  app.use(csurf());
 
   app.useGlobalPipes(
     new ValidationPipe({

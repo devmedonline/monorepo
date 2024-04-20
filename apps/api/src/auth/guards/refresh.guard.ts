@@ -24,7 +24,6 @@ export class RefreshJwtGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = JWTPayload.extractRefreshTokenFromRequest(request);
-    console.log('refresh guard', token);
 
     if (!token) throw new UnauthorizedException();
 
