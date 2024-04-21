@@ -28,9 +28,10 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Docs Med App')
-    .setDescription('A descrição da API do Med App')
+    .setDescription(
+      'Mep App API é a API que nutre o aplicativo de estudos de medicina Med App',
+    )
     .setVersion('1.0')
-    .addTag('example')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

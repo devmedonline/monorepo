@@ -47,7 +47,7 @@ export class AuthController {
   ) {
     const refresh = await this.authService.refreshToken(user);
 
-    this.setCookies(response, refresh);
+    this.setCookies(response, refresh.backendTokens);
 
     return new BasicResponseWrapper({
       data: refresh,

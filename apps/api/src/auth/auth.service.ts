@@ -6,7 +6,7 @@ import { Crypto } from './crypto';
 import { LoginDto } from './dto/auth.dto';
 import { JWTPayload } from './entities/jwt-payload.entity';
 
-const EXPIRE_TIME = 20 * 1000;
+const EXPIRE_TIME = 20 * 1000 * 60;
 
 const ACCESS_TOKEN_EXPIRES_IN = '20m';
 const REFRESH_TOKEN_EXPIRES_IN = '7d';
@@ -62,15 +62,17 @@ export class AuthService {
     }).toPlainObject();
 
     return {
-      accessToken: await this.jwtService.signAsync(payload, {
-        expiresIn: ACCESS_TOKEN_EXPIRES_IN,
-        secret: process.env.JWT_SECRET_KEY,
-      }),
-      refreshToken: await this.jwtService.signAsync(payload, {
-        expiresIn: REFRESH_TOKEN_EXPIRES_IN,
-        secret: process.env.JWT_REFRESH_TOKEN_SECRET_KEY,
-      }),
-      expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME),
+      backendTokens: {
+        accessToken: await this.jwtService.signAsync(payload, {
+          expiresIn: ACCESS_TOKEN_EXPIRES_IN,
+          secret: process.env.JWT_SECRET_KEY,
+        }),
+        refreshToken: await this.jwtService.signAsync(payload, {
+          expiresIn: REFRESH_TOKEN_EXPIRES_IN,
+          secret: process.env.JWT_REFRESH_TOKEN_SECRET_KEY,
+        }),
+        expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME),
+      },
     };
   }
 }
