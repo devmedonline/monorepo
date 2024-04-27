@@ -1,30 +1,30 @@
-import { fetchRefreshToken } from '@/modules/auth/services/fetch-refresh-token';
-import { fetchSignIn } from '@/modules/auth/services/fetch-sign-in';
-import NextAuth, { NextAuthOptions } from 'next-auth';
-import Credentials from 'next-auth/providers/credentials';
-import Google from 'next-auth/providers/google';
+import { fetchRefreshToken } from "@/modules/auth/services/fetch-refresh-token";
+import { fetchSignIn } from "@/modules/auth/services/fetch-sign-in";
+import NextAuth, { NextAuthOptions } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
 if (!GOOGLE_CLIENT_ID) {
-  throw new Error('GOOGLE_CLIENT_ID is not set');
+  throw new Error("GOOGLE_CLIENT_ID is not set");
 }
 
 if (!GOOGLE_CLIENT_SECRET) {
-  throw new Error('GOOGLE_CLIENT_SECRET is not set');
+  throw new Error("GOOGLE_CLIENT_SECRET is not set");
 }
 
 export const authOptions: NextAuthOptions = {
   providers: [
     Credentials({
-      name: 'email e senha',
+      name: "email e senha",
       credentials: {
-        email: { label: 'E-mail', type: 'email' },
-        password: { label: 'Senha', type: 'password' },
+        email: { label: "E-mail", type: "email" },
+        password: { label: "Senha", type: "password" },
       },
       authorize: async (credentials, _req) => {
-        if (typeof credentials === 'undefined') {
+        if (typeof credentials === "undefined") {
           return null;
         }
 
@@ -67,7 +67,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  debug: process.env.NODE_ENV === 'development',
+  debug: process.env.NODE_ENV === "development",
   secret: process.env.SECRET,
   logger: {
     error(code, ...message) {
@@ -79,6 +79,9 @@ export const authOptions: NextAuthOptions = {
     debug(code, ...message) {
       console.debug(code, message);
     },
+  },
+  pages: {
+    signIn: "/sign-in",
   },
 };
 

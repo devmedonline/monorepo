@@ -4,6 +4,9 @@
 
 @layer base {
   :root {
+    --header-height: 4rem;
+    --view-height: calc(100dvh - var(--header-height));
+
     --background: 0 0% 100%;
     --foreground: 224 71.4% 4.1%;
     --card: 0 0% 100%;

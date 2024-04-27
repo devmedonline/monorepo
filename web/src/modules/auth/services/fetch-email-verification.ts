@@ -6,6 +6,9 @@ export async function fetchEmailVerification(token: string): Promise<void> {
       headers: {
         'Content-Type': 'application/json',
       },
+      next: {
+        revalidate: false,
+      },
     }
   );
 

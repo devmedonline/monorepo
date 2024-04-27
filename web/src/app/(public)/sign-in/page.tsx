@@ -1,26 +1,16 @@
 import syringe from "@/modules/auth/assets/syringe.jpg";
-import { RegisterForm } from "@/modules/auth/components/register-form";
-import { fetchSignUp } from "@/modules/auth/services/fetch-sign-up";
+import { SignInForm } from "@/modules/auth/components/sign-in-form";
 import { cn } from "@/shared/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
-const signUpMutation = async (formData: FormData) => {
-  "use server";
-
-  try {
-    await fetchSignUp(formData);
-    return redirect("/sign-in");
-  } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Aconteceu um erro";
-
-    return redirect(`/register?error=${message}`);
-  }
+type SignInPageProps = {
+  searchParams: {
+    callbackUrl: string;
+  };
 };
 
-export default function RegisterPage() {
+export default function SignInPage(props: SignInPageProps) {
   return (
     <div className="h-dvh w-dvw grid place-items-center">
       <Image
@@ -33,24 +23,22 @@ export default function RegisterPage() {
       <div className="absolute backdrop-blur-md w-full h-full"></div>
 
       <div className="container z-10 max-w-md">
-        <h1 className="text-xl ml-4 font-bold text-primary-foreground">
-          Cadastrar-se no sistema
-        </h1>
+        <h1 className="text-xl ml-4 font-bold text-white">Entrar no sistema</h1>
 
-        <RegisterForm
-          onSubmit={signUpMutation}
+        <SignInForm
+          callbackUrl={props.searchParams.callbackUrl}
           className="flex items-end justify-center flex-col border p-4 rounded-3xl bg-card text-card-foreground"
         />
 
         <div className="mt-3 w-fit text-white rounded-full mr-4 ml-auto">
           <p className="text-xs">
-            Já tem uma conta?{" "}
+            Não tem uma conta?{" "}
             <Link
               className="ml-2 px-3 py-1 rounded-full bg-primary/15 text-primary-foreground"
-              href="/sign-in"
-              title="Entrar"
+              href="/register"
+              title="Cadastrar-se"
             >
-              Entrar
+              Cadastrar-se
             </Link>
           </p>
         </div>
