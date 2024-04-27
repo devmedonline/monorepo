@@ -3,5 +3,5 @@ export default function PublicLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className="bg-blue-500 h-screen w-screen">{children}</div>;
+  return <div className="h-screen w-screen">{children}</div>;
 }
