@@ -1,8 +1,17 @@
 import GlobalProviders from "@/shared/components/global-providers";
 import { cn } from "@/shared/lib/utils";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Poppins as FontSans } from "next/font/google";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  height: "device-height",
+  initialScale: 1,
+  minimumScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
+};
 
 const fontSans = FontSans({
   subsets: ["latin"],
