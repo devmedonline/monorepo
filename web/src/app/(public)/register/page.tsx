@@ -5,6 +5,7 @@ import { cn } from "@/shared/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 const signUpMutation = async (formData: FormData) => {
   "use server";
@@ -37,10 +38,12 @@ export default function RegisterPage() {
           Cadastrar-se no sistema
         </h1>
 
-        <RegisterForm
-          onSubmit={signUpMutation}
-          className="flex items-end justify-center flex-col border p-4 rounded-3xl bg-card text-card-foreground"
-        />
+        <Suspense fallback={<p className="text-white">Carregando...</p>}>
+          <RegisterForm
+            onSubmit={signUpMutation}
+            className="flex items-end justify-center flex-col border p-4 rounded-3xl bg-card text-card-foreground"
+          />
+        </Suspense>
 
         <div className="mt-3 w-fit text-white rounded-full mr-4 ml-auto">
           <p className="text-xs">
