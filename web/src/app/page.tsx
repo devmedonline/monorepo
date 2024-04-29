@@ -19,7 +19,7 @@ export default function Home() {
         <h1 className="text-center inline-block bg-gradient-to-r from-primary via-cyan-400 to-primary bg-clip-text text-5xl font-black text-transparent lg:text-6xl mt-[24dvh]">
           MedApp
         </h1>
-        <p className="text-pretty text-lg mt-4">
+        <p className="text-center text-lg mt-4">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </p>
       </div>
