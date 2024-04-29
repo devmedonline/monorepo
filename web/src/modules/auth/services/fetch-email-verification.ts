@@ -1,10 +1,12 @@
-export async function fetchEmailVerification(token: string): Promise<void> {
+export async function fetchEmailVerification(
+  token: string
+): Promise<{ data: { userId: string } }> {
   const response = await fetch(
-    process.env.API_URL + '/user/email-verification/' + token,
+    process.env.API_URL + "/user/email-verification/" + token,
     {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       next: {
         revalidate: false,
@@ -18,9 +20,9 @@ export async function fetchEmailVerification(token: string): Promise<void> {
 
   const failed = await response.json();
 
-  const intl = new Intl.ListFormat('pt-BR', {
-    style: 'long',
-    type: 'conjunction',
+  const intl = new Intl.ListFormat("pt-BR", {
+    style: "long",
+    type: "conjunction",
   });
 
   throw new Error(

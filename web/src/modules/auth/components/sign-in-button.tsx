@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
 import {
+  Loader2Icon,
   LucideUserRound,
   LucideUserRoundCheck,
   LucideUserRoundPlus,
@@ -19,7 +20,37 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { memo } from "react";
 
-function InnerSignInButton() {
+function InnerSignInButtonList() {
+  const session = useSession();
+
+  if (session.status === "loading") {
+    return (
+      <Button disabled className="flex gap-2 items-center">
+        <Loader2Icon className="animate-spin" /> Carregando...
+      </Button>
+    );
+  }
+
+  if (session.status === "authenticated") {
+    return (
+      <Button
+        onClick={() => signOut()}
+        className="flex gap-2 items-center"
+        variant="destructive"
+      >
+        Sair <LucideUserRoundX size={18} />
+      </Button>
+    );
+  }
+
+  return (
+    <Button onClick={() => signIn()} className="flex gap-2 items-center">
+      Entrar <LucideUserRoundCheck size={18} />
+    </Button>
+  );
+}
+
+function InnerSignInDropdownTrigger() {
   const session = useSession();
 
   return (
@@ -98,5 +129,8 @@ function InnerSignInButton() {
   );
 }
 
-export const SignInButton = memo(InnerSignInButton);
-SignInButton.displayName = "SignInButton";
+export const SignInDropdownTrigger = memo(InnerSignInDropdownTrigger);
+SignInDropdownTrigger.displayName = "SignInDropdownTrigger";
+
+export const SignInButtonList = memo(InnerSignInButtonList);
+SignInButtonList.displayName = "SignInButtonList";

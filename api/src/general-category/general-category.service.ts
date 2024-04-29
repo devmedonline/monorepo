@@ -1,12 +1,12 @@
 import {
-  Injectable,
   ConflictException,
+  Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { randomUUID } from 'node:crypto';
+import { PrismaService } from 'src/prisma.service';
 import { CreateGeneralCategoryDto } from './dto/create-general-category.dto';
 import { UpdateGeneralCategoryDto } from './dto/update-general-category.dto';
-import { PrismaService } from 'src/prisma.service';
-import { randomUUID } from 'node:crypto';
 
 @Injectable()
 export class GeneralCategoryService {

@@ -1,15 +1,16 @@
 import {
+  Body,
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
   Param,
+  Patch,
+  Post,
   Query,
 } from '@nestjs/common';
-import { GeneralCategoryService } from './general-category.service';
+import { BasicResponseWrapper } from 'src/common/entities/basic-response-wrapper.entity';
 import { CreateGeneralCategoryDto } from './dto/create-general-category.dto';
 import { UpdateGeneralCategoryDto } from './dto/update-general-category.dto';
+import { GeneralCategoryService } from './general-category.service';
 
 @Controller('general-category')
 export class GeneralCategoryController {
@@ -18,35 +19,50 @@ export class GeneralCategoryController {
   ) {}
 
   @Post()
-  create(@Body() createGeneralCategoryDto: CreateGeneralCategoryDto) {
-    return this.generalCategoryService.create(createGeneralCategoryDto);
+  async create(@Body() createGeneralCategoryDto: CreateGeneralCategoryDto) {
+    return new BasicResponseWrapper({
+      data: await this.generalCategoryService.create(createGeneralCategoryDto),
+    });
   }
 
   @Get()
-  findAll() {
-    return this.generalCategoryService.findAll();
+  async findAll() {
+    return new BasicResponseWrapper({
+      data: await this.generalCategoryService.findAll(),
+    });
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.generalCategoryService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    return new BasicResponseWrapper({
+      data: await this.generalCategoryService.findOne(id),
+    });
   }
 
   @Get('search')
-  search(@Query('search') search: string) {
-    return this.generalCategoryService.search(search);
+  async search(@Query('search') search: string) {
+    return new BasicResponseWrapper({
+      data: await this.generalCategoryService.search(search),
+    });
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateGeneralCategoryDto: UpdateGeneralCategoryDto,
   ) {
-    return this.generalCategoryService.update(id, updateGeneralCategoryDto);
+    return new BasicResponseWrapper({
+      data: await this.generalCategoryService.update(
+        id,
+        updateGeneralCategoryDto,
+      ),
+    });
   }
 
   @Patch(':id/toggle-public-availability')
-  togglePublicAvailability(@Param('id') id: string) {
-    return this.generalCategoryService.togglePublicAvailability(id);
+  async togglePublicAvailability(@Param('id') id: string) {
+    return new BasicResponseWrapper({
+      data: await this.generalCategoryService.togglePublicAvailability(id),
+    });
   }
 }

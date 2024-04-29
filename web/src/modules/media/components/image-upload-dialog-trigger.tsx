@@ -128,68 +128,81 @@ export function ImageUploadDialogTrigger({
     }
   };
 
+  const disabled = process.env.NEXT_PUBLIC_FLAG_DISABLE_IMAGE_UPLOAD === "true";
+
   return (
     <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-h-[90dvh]">
-        <DialogHeader>Imagem</DialogHeader>
-        <Form {...form}>
-          <form
-            encType="multipart/form-data"
-            id={id}
-            method="POST"
-            className="w-full space-y-3"
-            onSubmit={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              return form.handleSubmit(onSubmit)(e);
-            }}
-          >
-            <ScrollArea className="h-96 max-w-full">
+      <DialogTrigger asChild disabled={disabled}>
+        {children}
+      </DialogTrigger>
+      {disabled ? (
+        <DialogContent>
+          <DialogHeader>Imagem</DialogHeader>
+          <p className="text-center text-muted-foreground">
+            O upload de imagens está desativado
+          </p>
+        </DialogContent>
+      ) : (
+        <DialogContent className="max-h-[90dvh]">
+          <DialogHeader>Imagem</DialogHeader>
+          <Form {...form}>
+            <form
+              encType="multipart/form-data"
+              id={id}
+              method="POST"
+              className="w-full space-y-3"
+              onSubmit={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                return form.handleSubmit(onSubmit)(e);
+              }}
+            >
+              <ScrollArea className="h-96 max-w-full">
+                <FormField
+                  control={form.control}
+                  name="image"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel className="sr-only">Imagem</FormLabel>
+                      <FormControl>
+                        <FileDropZone dropzoneState={imageDropzone}>
+                          <FileDropZone.Container>
+                            <FileDropZone.Input {...field} />
+                            <FileDropZone.Preview />
+                            <FileDropZone.Button />
+                          </FileDropZone.Container>
+                        </FileDropZone>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </ScrollArea>
+
               <FormField
                 control={form.control}
-                name="image"
+                name="altText"
                 render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel className="sr-only">Imagem</FormLabel>
+                  <FormItem>
+                    <FormLabel>Descrição da imagem</FormLabel>
                     <FormControl>
-                      <FileDropZone dropzoneState={imageDropzone}>
-                        <FileDropZone.Container>
-                          <FileDropZone.Input {...field} />
-                          <FileDropZone.Preview />
-                          <FileDropZone.Button />
-                        </FileDropZone.Container>
-                      </FileDropZone>
+                      <Input
+                        placeholder="Imagem com fundo azul, pessoas correndo..."
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            </ScrollArea>
 
-            <FormField
-              control={form.control}
-              name="altText"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Descrição da imagem</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Imagem com fundo azul, pessoas correndo..."
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button type="submit" className="w-full gap-2 items-center">
-              Salvar
-            </Button>
-          </form>
-        </Form>
-      </DialogContent>
+              <Button type="submit" className="w-full gap-2 items-center">
+                Salvar
+              </Button>
+            </form>
+          </Form>
+        </DialogContent>
+      )}
     </Dialog>
   );
 }

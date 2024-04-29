@@ -26,6 +26,7 @@ export async function fetchApi<T>(
 
     if (response.status >= 400) {
       const error = await response.json();
+      console.error("API Error", error);
       throw new ApiError(error.message, response.status);
     }
 

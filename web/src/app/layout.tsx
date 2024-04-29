@@ -26,7 +26,7 @@ export default function RootLayout({
           ["--font-sans" as any]: fontSans.style.fontFamily,
         }}
         className={cn(
-          "min-h-screen w-screen overflow-x-hidden bg-background font-sans antialiased",
+          "min-h-screen w-dvw overflow-x-hidden bg-background font-sans antialiased",
           fontSans.className
         )}
       >
