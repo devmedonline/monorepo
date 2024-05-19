@@ -8,27 +8,7 @@ export class BasicResponseWrapper<T> {
   @IsObject()
   data: T;
 
-  @ApiProperty({ type: 'object', additionalProperties: { type: 'string' } })
-  @IsOptional()
-  @IsObject()
-  meta?: any;
-
-  @ApiProperty({ type: 'object', additionalProperties: { type: 'string' } })
-  @IsOptional()
-  @IsObject()
-  links?: Record<string, string>;
-
-  constructor({
-    data,
-    meta,
-    links,
-  }: {
-    data: T;
-    meta?: any;
-    links?: Record<string, string>;
-  }) {
+  constructor({ data }: { data: T }) {
     this.data = data;
-    this.meta = meta;
-    this.links = links;
   }
 }
