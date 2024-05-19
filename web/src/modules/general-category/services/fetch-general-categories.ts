@@ -1,26 +1,36 @@
-import { fetchWithServerSession } from "@/modules/auth/lib/server-fetch-with-session";
+import { fetchApi } from "@/shared/lib/fetch-api";
+import { GeneralCategory } from "../types/general-category";
 
-type Pagination = {
-  page: number;
-  perPage: number;
+export type GeneralCategoriesInput = {
+  search?: string;
+  page?: number;
+  take?: number;
 };
 
-function paginationToSearchParams(pagination: Pagination) {
+export async function fetchGeneralCategories(
+  params: GeneralCategoriesInput = {}
+): Promise<{ generalCategories: GeneralCategory[] }> {
   const searchParams = new URLSearchParams();
-  searchParams.set("page", String(pagination.page));
-  searchParams.set("perPage", String(pagination.perPage));
-  return searchParams;
-}
 
-export async function fetchGeneralCategories(params: Pagination) {
-  const searchParams = new URLSearchParams(paginationToSearchParams(params));
+  if (params.search) {
+    searchParams.set("search", params.search);
+  }
 
-  const response = await fetchWithServerSession(
-    "/general-category" + "?" + searchParams.toString(),
-    {
-      method: "GET",
-    }
-  );
+  if (params.page) {
+    searchParams.set("page", String(params.page));
+  }
 
-  return response.json();
+  if (params.take) {
+    searchParams.set("take", String(params.take));
+  }
+
+  const url = `/general-category?${searchParams.toString()}`;
+
+  const response = await fetchApi<GeneralCategory[]>(url, {
+    method: "GET",
+  });
+
+  return {
+    generalCategories: response.data,
+  };
 }

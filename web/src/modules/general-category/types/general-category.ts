@@ -14,9 +14,4 @@ export type CreateGeneralCategoryDto = {
   thumbnail: string;
 };
 
-export type UpdateGeneralCategoryDto = {
-  id: string;
-  name: string;
-  description: string;
-  thumbnail: string;
-};
+export type UpdateGeneralCategoryDto = Partial<CreateGeneralCategoryDto>;

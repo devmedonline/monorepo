@@ -4,6 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
+import { PageMetaDto } from 'src/common/dtos/page-meta.dto';
+import { PageOptionsWithSearchDto } from 'src/common/dtos/page-options.dto';
+import { PageDto } from 'src/common/dtos/page.dto';
 import { PrismaService } from 'src/prisma.service';
 import { CreateGeneralCategoryDto } from './dto/create-general-category.dto';
 import { UpdateGeneralCategoryDto } from './dto/update-general-category.dto';
@@ -31,17 +34,32 @@ export class GeneralCategoryService {
     });
   }
 
-  async findAll() {
-    return this.prisma.generalCategory.findMany();
-  }
+  async search(pagination: PageOptionsWithSearchDto) {
+    const filter = pagination.search
+      ? {
+          OR: [
+            { name: { contains: pagination.search } },
+            { description: { contains: pagination.search } },
+          ],
+        }
+      : {};
 
-  async search(search: string) {
-    return this.prisma.generalCategory.findMany({
-      where: {
-        name: { contains: search },
-        description: { contains: search },
-      },
+    const [results, total] = await this.prisma.$transaction([
+      this.prisma.generalCategory.findMany({
+        skip: pagination.skip,
+        take: pagination.take,
+        orderBy: { name: pagination.order },
+        where: filter,
+      }),
+      this.prisma.generalCategory.count({ where: filter }),
+    ]);
+
+    const paginationMeta = new PageMetaDto({
+      itemCount: total,
+      pageOptionsDto: pagination,
     });
+
+    return new PageDto(results, paginationMeta);
   }
 
   async findOne(id: string) {
@@ -76,5 +94,9 @@ export class GeneralCategoryService {
         publicAvailable,
       },
     });
+  }
+
+  async remove(id: string) {
+    return this.prisma.generalCategory.delete({ where: { id } });
   }
 }

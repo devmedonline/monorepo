@@ -1,12 +1,14 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
   Post,
   Query,
 } from '@nestjs/common';
+import { PageOptionsWithSearchDto } from 'src/common/dtos/page-options.dto';
 import { BasicResponseWrapper } from 'src/common/entities/basic-response-wrapper.entity';
 import { CreateGeneralCategoryDto } from './dto/create-general-category.dto';
 import { UpdateGeneralCategoryDto } from './dto/update-general-category.dto';
@@ -26,23 +28,14 @@ export class GeneralCategoryController {
   }
 
   @Get()
-  async findAll() {
-    return new BasicResponseWrapper({
-      data: await this.generalCategoryService.findAll(),
-    });
+  async search(@Query() options: PageOptionsWithSearchDto) {
+    return this.generalCategoryService.search(options);
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return new BasicResponseWrapper({
       data: await this.generalCategoryService.findOne(id),
-    });
-  }
-
-  @Get('search')
-  async search(@Query('search') search: string) {
-    return new BasicResponseWrapper({
-      data: await this.generalCategoryService.search(search),
     });
   }
 
@@ -63,6 +56,13 @@ export class GeneralCategoryController {
   async togglePublicAvailability(@Param('id') id: string) {
     return new BasicResponseWrapper({
       data: await this.generalCategoryService.togglePublicAvailability(id),
+    });
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return new BasicResponseWrapper({
+      data: await this.generalCategoryService.remove(id),
     });
   }
 }

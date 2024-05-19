@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  rewrites: async () => {
-    return [
+  images: {
+    remotePatterns: [
       {
-        source: '/api/backend/:path*',
-        destination: process.env.REAL_API_URL + '/:path*',
+        protocol: "https",
+        hostname: "images.unsplash.com",
       },
-    ];
+    ],
   },
 };
 
