@@ -1,3 +1,4 @@
+import { themeCookieJar } from "@/modules/layout/lib/theme-cookie";
 import GlobalProviders from "@/shared/components/global-providers";
 import { cn } from "@/shared/lib/utils";
 import type { Metadata, Viewport } from "next";
@@ -28,6 +29,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { getTheme } = themeCookieJar();
+
   return (
     <html lang="pt-br" suppressHydrationWarning>
       <body
@@ -36,7 +39,8 @@ export default function RootLayout({
         }}
         className={cn(
           "min-h-screen w-dvw overflow-x-hidden bg-background font-sans antialiased",
-          fontSans.className
+          fontSans.className,
+          getTheme()
         )}
       >
         <GlobalProviders>{children}</GlobalProviders>
