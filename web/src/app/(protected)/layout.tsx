@@ -1,4 +1,6 @@
 import { SignInButtonList } from "@/modules/auth/components/sign-in-button";
+import { LucideBriefcaseMedical } from "lucide-react";
+import Link from "next/link";
 
 export default function PublicLayout({
   children,
@@ -8,7 +10,12 @@ export default function PublicLayout({
   return (
     <>
       <header className="sticky top-0 flex items-center justify-between h-[--header-height] bg-card border-b px-4">
-        <h1 className="text-xl font-semibold">Med App</h1>
+        <Link href="/">
+          <h1 className="text-xl font-semibold">
+            <LucideBriefcaseMedical className="w-6 h-6 mr-2 inline-block" />
+            <span>Med App</span>
+          </h1>
+        </Link>
 
         <SignInButtonList />
       </header>

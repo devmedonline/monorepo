@@ -11,12 +11,12 @@ const YEAR = new Date().getFullYear();
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center">
+    <main className="flex flex-col items-center bg-gradient-to-t from-gray-200 to-background">
       <SimpleHeader />
       <FloatingDashboardButton />
 
-      <div className="flex items-center justify-center flex-col container">
-        <h1 className="text-center inline-block bg-gradient-to-r from-primary via-cyan-400 to-primary bg-clip-text text-5xl font-black text-transparent lg:text-6xl mt-[24dvh]">
+      <div className="flex items-center justify-center relative flex-col container">
+        <h1 className="text-center inline-block bg-gradient-to-r from-primary via-cyan-400 to-primary bg-clip-text text-5xl font-black text-transparent lg:text-9xl mt-[24dvh]">
           MedApp
         </h1>
         <p className="text-center text-lg mt-4">
@@ -57,6 +57,7 @@ export default function Home() {
               width: iPhoneMockup.width * 0.2,
             }}
           />
+
           <FeatureListItem
             title="Lorem ipsum dolor sit amet."
             description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
@@ -93,7 +94,7 @@ export default function Home() {
         </p>
       </section>
 
-      <footer className="mt-16 w-full h-40 border-t bg-secondary text-secondary-foreground">
+      <footer className="mt-16 w-full h-40 shadow-lg bg-primary text-primary-foreground">
         <div className="flex justify-center items-center h-full">
           <p className="text-center">{YEAR} DevMed.</p>
         </div>
