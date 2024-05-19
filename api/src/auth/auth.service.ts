@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserWithPermissions } from 'src/user/dto/user-with-permissions.dto';
+import { EmailVerificationService } from 'src/user/email-verification.service';
 import { UserService } from 'src/user/user.service';
 import { Crypto } from './crypto';
 import { LoginDto } from './dto/auth.dto';
@@ -17,10 +18,15 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
     private crypto: Crypto,
+    private readonly emailVerificationService: EmailVerificationService,
   ) {}
 
   async login(dto: LoginDto) {
     const user = await this.validateUser(dto);
+
+    if (user.verified === false) {
+      await this.emailVerificationService.triggerEmailVerification(user.email);
+    }
 
     const payload = new JWTPayload(user.id, {
       name: user.name,
@@ -47,7 +53,12 @@ export class AuthService {
   async validateUser(dto: LoginDto) {
     const user = await this.userService.findByEmail(dto.email);
 
-    if (user && (await this.crypto.compare(dto.password, user.password))) {
+    const passwordIsValid = await this.crypto.compare(
+      dto.password,
+      user.password,
+    );
+
+    if (user && passwordIsValid) {
       return UserService.toUser(user);
     }
 

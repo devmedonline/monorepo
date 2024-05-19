@@ -17,17 +17,20 @@ export async function fetchSignUp(
   const name = formData.get("name");
   const email = formData.get("email");
 
-  const response = await fetch(process.env.API_URL + "/auth/register", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name,
-      email,
-      password,
-    }),
-  });
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_API_URL + "/auth/register",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+    }
+  );
 
   if (response.ok) {
     return response.json();

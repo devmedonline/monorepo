@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Logger,
   Param,
   Patch,
   Post,
@@ -17,6 +18,8 @@ import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
+  private readonly logger = new Logger(UserController.name);
+
   constructor(
     private readonly userService: UserService,
     private readonly emailVerificationService: EmailVerificationService,
@@ -41,6 +44,8 @@ export class UserController {
   @Get('me')
   @CheckJWT()
   me(@User() user: UserWithPermissions) {
+    this.logger.log('User data requested');
+    this.logger.log(user);
     return new BasicResponseWrapper({ data: user });
   }
 

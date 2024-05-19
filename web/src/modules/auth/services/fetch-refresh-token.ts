@@ -1,19 +1,23 @@
-import { SignInData } from '@/shared/types/next-auth';
-import { JWT } from 'next-auth/jwt';
+import { SignInData } from "@/shared/types/next-auth";
+import { JWT } from "next-auth/jwt";
 
-type RefreshTokenResponse = Pick<SignInData, 'backendTokens'>;
+type RefreshTokenResponse = Pick<SignInData, "backendTokens">;
 
 export async function fetchRefreshToken(token: JWT): Promise<JWT> {
-  const response = await fetch(process.env.API_URL + '/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Refresh ' + token.refreshToken,
-    },
-  });
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_API_URL + "/auth/login",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Refresh: "Bearer " + token.refreshToken,
+      },
+    }
+  );
 
   if (response.ok) {
     const ok: RefreshTokenResponse = await response.json();
+    console.log("ok", ok);
 
     return {
       ...token,
@@ -23,9 +27,9 @@ export async function fetchRefreshToken(token: JWT): Promise<JWT> {
 
   const failed = await response.json();
 
-  const intl = new Intl.ListFormat('pt-BR', {
-    style: 'long',
-    type: 'conjunction',
+  const intl = new Intl.ListFormat("pt-BR", {
+    style: "long",
+    type: "conjunction",
   });
 
   throw new Error(intl.format(failed.message));

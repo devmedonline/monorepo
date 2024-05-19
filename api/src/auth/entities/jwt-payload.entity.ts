@@ -22,15 +22,37 @@ export class JWTPayload {
 
   static extractTokenFromRequest(request: Request): string | undefined {
     const cookie = request.cookies?.[process.env.JWT_COOKIE_NAME];
-    if (cookie) return cookie;
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
+
+    if (cookie) {
+      return cookie;
+    }
+
+    return JWTPayload.extractValueFromHeader(request, 'Authorization');
   }
 
   static extractRefreshTokenFromRequest(request: Request): string | undefined {
     const cookie = request.cookies?.[process.env.JWT_REFRESH_COOKIE_NAME];
-    if (cookie) return cookie;
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Refresh' ? token : undefined;
+
+    if (cookie) {
+      return cookie;
+    }
+
+    return JWTPayload.extractValueFromHeader(request, 'Refresh');
+  }
+
+  private static extractValueFromHeader(
+    request: Request,
+    headerName: string,
+  ): string | undefined {
+    const header = request.headers[headerName.toLowerCase()];
+
+    if (!header) {
+      return undefined;
+    }
+
+    const headerValue = Array.isArray(header) ? header[0] : header;
+
+    const [type, token] = headerValue.split(' ') ?? [];
+    return type.toLowerCase() === 'bearer' ? token : undefined;
   }
 }

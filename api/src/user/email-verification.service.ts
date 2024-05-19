@@ -1,6 +1,7 @@
 import {
   Injectable,
   InternalServerErrorException,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { ActionToken } from '@prisma/client';
@@ -14,6 +15,8 @@ import { PrismaService } from 'src/prisma.service';
 export class EmailVerificationService {
   static TOKEN_TYPE = 'email-verification';
   static EXPIRES_IN = 1000 * 60 * 60 * 2;
+
+  private readonly logger = new Logger(EmailVerificationService.name);
 
   constructor(
     private readonly prisma: PrismaService,
@@ -39,8 +42,10 @@ export class EmailVerificationService {
         EmailVerification({ name: user.name, token }),
       );
 
+      this.logger.log(`Sending email to ${email}`);
       await this.mailerService.sendEmail(message);
     } catch (error) {
+      this.logger.error(error);
       throw new InternalServerErrorException(error);
     }
   }
@@ -88,13 +93,17 @@ export class EmailVerificationService {
       ? lastActionToken.token
       : randomUUID();
 
-    await this.prisma.actionToken.create({
-      data: {
-        token,
-        userId: userId,
-        type: EmailVerificationService.TOKEN_TYPE,
-        expiresAt: new Date().getTime() + EmailVerificationService.EXPIRES_IN,
-      },
+    const actionToken = {
+      token,
+      userId: userId,
+      type: EmailVerificationService.TOKEN_TYPE,
+      expiresAt: new Date().getTime() + EmailVerificationService.EXPIRES_IN,
+    };
+
+    await this.prisma.actionToken.upsert({
+      where: { token: token },
+      create: actionToken,
+      update: actionToken,
     });
 
     return token;

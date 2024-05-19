@@ -6,6 +6,7 @@ import {
   ExecutionContext,
   HttpException,
   Injectable,
+  Logger,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
@@ -18,6 +19,8 @@ import { JWTPayload } from '../entities/jwt-payload.entity';
 
 @Injectable()
 export class JwtGuard implements CanActivate {
+  private readonly logger = new Logger(JwtGuard.name);
+
   constructor(
     private readonly jwtService: JwtService,
     private readonly prismaService: PrismaService,

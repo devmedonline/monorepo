@@ -26,58 +26,22 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(
-    @Body() dto: LoginDto,
-    @Res({ passthrough: true }) response: Response,
-  ) {
+  async login(@Body() dto: LoginDto) {
     const user = await this.authService.login(dto);
-
-    this.setCookies(response, user.backendTokens);
-
-    return new BasicResponseWrapper({
-      data: user,
-    });
+    return new BasicResponseWrapper({ data: user });
   }
 
   @Post('refresh')
   @CheckRefreshJWT()
-  async refreshToken(
-    @User() user: UserWithPermissions,
-    @Res({ passthrough: true }) response: Response,
-  ) {
+  async refreshToken(@User() user: UserWithPermissions) {
     const refresh = await this.authService.refreshToken(user);
-
-    this.setCookies(response, refresh.backendTokens);
-
-    return new BasicResponseWrapper({
-      data: refresh,
-    });
+    return new BasicResponseWrapper({ data: refresh });
   }
 
   @Post('logout')
   async logout(@Res({ passthrough: true }) response: Response) {
     response.clearCookie(process.env.JWT_REFRESH_COOKIE_NAME);
     response.clearCookie(process.env.JWT_COOKIE_NAME);
-
-    return new BasicResponseWrapper({
-      data: 'Saiu com sucesso!',
-    });
-  }
-
-  private setCookies(
-    response: Response,
-    tokens: { accessToken: string; refreshToken: string },
-  ) {
-    response.cookie(process.env.JWT_COOKIE_NAME, tokens.accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 20, // 20 minutes
-    });
-
-    response.cookie(process.env.JWT_REFRESH_COOKIE_NAME, tokens.refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-    });
+    return new BasicResponseWrapper({ data: 'Saiu com sucesso!' });
   }
 }

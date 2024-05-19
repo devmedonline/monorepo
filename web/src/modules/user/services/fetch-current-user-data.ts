@@ -1,21 +1,13 @@
-import { fetchWithServerSession } from "@/modules/auth/lib/server-fetch-with-session";
+import { fetchApi } from "@/shared/lib/fetch-api";
 import { CurrentUserData } from "../types/user";
 
 export async function fetchCurrentUserData(): Promise<CurrentUserData> {
-  const response = await fetchWithServerSession("/user/me");
+  const response = await fetchApi<CurrentUserData>("/user/me");
 
-  if (!response.ok) {
+  if (!response.data) {
+    console.error("Failed to fetch user data", response);
     throw new Error("Failed to fetch user data");
   }
 
-  return response.json().then((json) => {
-    return {
-      id: json.data.id,
-      email: json.data.email,
-      name: json.data.name,
-      avatar: json.data.avatar,
-      permissions: json.data.permissions,
-      verified: json.data.verified,
-    };
-  });
+  return response.data;
 }

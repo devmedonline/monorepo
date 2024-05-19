@@ -1,10 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { EmailMessage } from './entities/email.entity';
 
+type EmailPayload = {
+  to: {
+    email: string;
+    name: string;
+  }[];
+  from: {
+    email: string;
+    name: string;
+  };
+  subject: string;
+  html: string;
+  category: string;
+};
+
 @Injectable()
 export class EmailService {
   async sendEmail(message: EmailMessage): Promise<string[]> {
-    const payload = {
+    const payload: EmailPayload = {
       to: [
         {
           email: message.to.email,
@@ -20,6 +34,10 @@ export class EmailService {
       category: 'email',
     };
 
+    return this.fetchEmailAPI(payload);
+  }
+
+  private async fetchEmailAPI(payload: EmailPayload) {
     const init: RequestInit = {
       method: 'POST',
       headers: {
@@ -33,10 +51,8 @@ export class EmailService {
     const response = await fetch(process.env.MAILER_API_ENDPOINT, init);
 
     if (!response.ok) {
-      const errorResponse: EmailErrorResponse = await response.json();
-      throw new Error(
-        'Failed to send email: ' + errorResponse.errors.join(', '),
-      );
+      const errorResponse = await response.text();
+      throw new Error('Failed to send email: ' + errorResponse);
     }
 
     const successResponse: EmailSuccessResponse = await response.json();
@@ -48,9 +64,4 @@ export class EmailService {
 type EmailSuccessResponse = {
   success: true;
   message_ids: string[];
-};
-
-type EmailErrorResponse = {
-  success: false;
-  errors: string[];
 };

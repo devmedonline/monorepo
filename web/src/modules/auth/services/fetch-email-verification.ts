@@ -2,7 +2,7 @@ export async function fetchEmailVerification(
   token: string
 ): Promise<{ data: { userId: string } }> {
   const response = await fetch(
-    process.env.API_URL + "/user/email-verification/" + token,
+    process.env.NEXT_PUBLIC_API_URL + "/user/email-verification/" + token,
     {
       method: "PATCH",
       headers: {
