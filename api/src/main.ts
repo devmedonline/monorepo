@@ -3,10 +3,24 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
 import * as cookieParser from 'cookie-parser';
+import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
 import { AppModule } from './app.module';
 
+const ABOUT = {
+  title: 'Med App API',
+  description: 'API do aplicativo de estudos de medicina Med App',
+  version: '1.0',
+  author: '@devlulcas',
+};
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
+
+  app.useLogger(app.get(Logger));
+
+  app.useGlobalInterceptors(new LoggerErrorInterceptor());
 
   app.setGlobalPrefix('api');
 
@@ -27,11 +41,9 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Docs Med App')
-    .setDescription(
-      'Mep App API é a API que nutre o aplicativo de estudos de medicina Med App',
-    )
-    .setVersion('1.0')
+    .setTitle(ABOUT.title)
+    .setDescription(ABOUT.description)
+    .setVersion(ABOUT.version)
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
@@ -44,12 +56,19 @@ async function bootstrap() {
       theme: 'kepler',
       showSidebar: true,
       searchHotKey: 'k',
-      layout: 'classic',
-      hideModels: true,
+      layout: 'modern',
+      authentication: {
+        http: {
+          basic: null,
+          bearer: {
+            token: '',
+          },
+        },
+      },
       metaData: {
-        title: 'Docs Med App',
-        description: 'A descrição da API do Med App',
-        author: '@devlulcas',
+        title: ABOUT.title,
+        description: ABOUT.description,
+        author: ABOUT.author,
       },
       spec: {
         content: document,

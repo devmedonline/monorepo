@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -13,11 +14,19 @@ import { SimulationPhaseModule } from './simulation-phase/simulation-phase.modul
 import { SimulationModule } from './simulation/simulation.module';
 import { UserModule } from './user/user.module';
 
+const isDev = process.env.NODE_ENV === 'development';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env.local', '.env.development', '.env.production'],
+    }),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        customProps: () => ({ context: 'HTTP' }),
+        transport: { target: 'pino-pretty' },
+      },
     }),
     UserModule,
     AuthModule,
