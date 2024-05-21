@@ -1,10 +1,12 @@
+"use client";
+
 import { createImageFileSchema } from "@/modules/media/lib/create-image-file-schema";
 import { uploadImageToGallery } from "@/modules/media/services/upload-image-to-gallery";
 import { useToast } from "@/shared/components/ui/use-toast";
 import { cn } from "@/shared/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import NextImage from "next/image";
-import { useId } from "react";
+import { useId, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 
 const imageSchema = createImageFileSchema();
@@ -22,16 +24,19 @@ type ImageUploadAreaProps = {
   defaultValue?: {
     src: string | undefined;
   };
+  description?: string;
 };
 
 export function ImageUploadArea({
   onFailedUpload,
   onSuccessfulUpload,
   defaultValue,
+  description,
 }: ImageUploadAreaProps) {
   const id = useId();
-
   const { toast } = useToast();
+
+  const [image, setImage] = useState(defaultValue?.src);
 
   const uploadImageToGalleryMutation = useMutation({
     mutationFn: async (images: File[]) => {
@@ -42,6 +47,7 @@ export function ImageUploadArea({
       // Usado para pegar a altura e largura da imagem
       const image = new Image();
       image.src = URL.createObjectURL(firstImage);
+      setImage(image.src);
 
       return new Promise<UploadImageResponse>((resolve, reject) => {
         image.onload = async () => {
@@ -53,7 +59,7 @@ export function ImageUploadArea({
               file: firstImage,
               height: height,
               width: width,
-              alt: "avatar",
+              alt: description || "",
             });
 
             resolve(data);
@@ -64,11 +70,12 @@ export function ImageUploadArea({
       });
     },
     onError: (error) => {
+      setImage(undefined);
       onFailedUpload(
         error instanceof Error ? error : new Error("Erro desconhecido")
       );
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data) => {
       onSuccessfulUpload(data);
     },
   });
@@ -108,6 +115,8 @@ export function ImageUploadArea({
     },
   });
 
+  const currentSrc = image || defaultValue?.src;
+
   return (
     <div>
       <div
@@ -133,19 +142,16 @@ export function ImageUploadArea({
           style={{ width: "calc(100% - 1rem)", height: "calc(100% - 1rem)" }}
           className="origin-center overflow-clip rounded"
         >
-          {defaultValue && defaultValue.src ? (
+          {currentSrc ? (
             <NextImage
-              src={defaultValue?.src}
-              className={cn(
-                defaultValue?.src &&
-                  "h-full w-full object-contain transition-all duration-300 ease-in-out"
-              )}
+              src={currentSrc}
+              className="h-full w-full object-contain transition-all duration-300 ease-in-out"
               alt="Imagem para upload"
               width={1800}
               height={640}
             />
           ) : (
-            <p className="text-center text-secondary-foreground text-sm h-full flex justify-center items-center">
+            <p className="text-center text-secondary-foreground text-sm h-full flex justify-center items-center px-4">
               Arraste e solte uma imagem aqui ou clique para adicionar uma
               imagem
             </p>

@@ -6,6 +6,7 @@ const ACCEPTED_IMAGE_FILE_TYPES = [
   "image/jpg",
   "image/gif",
   "image/webp",
+  "image/svg+xml",
 ];
 
 const DEFAULT_OPTIONS = {

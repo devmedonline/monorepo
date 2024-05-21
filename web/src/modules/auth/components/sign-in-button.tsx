@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
+import { cn } from "@/shared/lib/utils";
 import {
   Loader2Icon,
   LucideUserRound,
@@ -20,12 +21,12 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { memo } from "react";
 
-function InnerSignInButtonList() {
+function InnerSignInButtonList({ className }: { className?: string }) {
   const session = useSession();
 
   if (session.status === "loading") {
     return (
-      <Button disabled className="flex gap-2 items-center">
+      <Button disabled className={cn("flex gap-2 items-center", className)}>
         <Loader2Icon className="animate-spin" /> Carregando...
       </Button>
     );
@@ -35,7 +36,7 @@ function InnerSignInButtonList() {
     return (
       <Button
         onClick={() => signOut()}
-        className="flex gap-2 items-center"
+        className={cn("flex gap-2 items-center", className)}
         variant="destructive"
       >
         Sair <LucideUserRoundX size={18} />
@@ -44,7 +45,10 @@ function InnerSignInButtonList() {
   }
 
   return (
-    <Button onClick={() => signIn()} className="flex gap-2 items-center">
+    <Button
+      onClick={() => signIn()}
+      className={cn("flex gap-2 items-center", className)}
+    >
       Entrar <LucideUserRoundCheck size={18} />
     </Button>
   );

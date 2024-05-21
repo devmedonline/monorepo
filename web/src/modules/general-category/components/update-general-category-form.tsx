@@ -1,3 +1,4 @@
+import { MediaPickerDialogTrigger } from "@/modules/media/components/media-picker-dialog-trigger";
 import { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
@@ -70,11 +71,16 @@ export function UpdateGeneralCategoryForm({
         <FormField
           control={form.control}
           name="thumbnail"
-          render={({ field }) => (
+          render={() => (
             <FormItem>
               <FormLabel>Thumbnail</FormLabel>
               <FormControl>
-                <Input placeholder="URL da imagem" {...field} />
+                <MediaPickerDialogTrigger
+                  media={{ url: defaultValues.thumbnail }}
+                  onPick={(media) => form.setValue("thumbnail", media.url)}
+                >
+                  <Button type="button">Selecionar thumbnail</Button>
+                </MediaPickerDialogTrigger>
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -1,5 +1,5 @@
 import { fetchApi } from "@/shared/lib/fetch-api";
-import { z } from "zod";
+import { fetchPresignedUrl } from "./fetch-presigned-url";
 
 export type ImageInput = {
   file: File;
@@ -7,6 +7,7 @@ export type ImageInput = {
   width: number;
   alt: string;
 };
+
 export type UploadImageToGalleryResult = {
   id: string;
   url: string;
@@ -18,25 +19,42 @@ export type UploadImageToGalleryResult = {
 export async function uploadImageToGallery(
   image: ImageInput
 ): Promise<UploadImageToGalleryResult> {
-  const formData = new FormData();
-  formData.append("file", image.file);
+  const presignedUrl = await fetchPresignedUrl(image.file);
 
-  const json = await fetchApi("/medias", {
-    method: "POST",
-    body: formData,
+  const response = await fetch(presignedUrl.url, {
+    method: "PUT",
+    body: image.file,
+    headers: {
+      "Content-Type": image.file.type,
+    },
   });
 
-  const parsedJson = z
-    .object({ uuid: z.string(), url: z.string() })
-    .safeParse(json.data);
+  if (!response.ok) throw new Error("Erro ao fazer upload da imagem");
 
-  if (parsedJson.success === false) throw new Error("Resposta da API inválida");
+  const json = await fetchApi<{ url: string; description: string }>(
+    "/file-upload/save",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        key: presignedUrl.key,
+        description: image.alt,
+      }),
+    }
+  );
 
-  return {
-    id: parsedJson.data.uuid,
-    url: parsedJson.data.url,
+  console.log({
+    id: presignedUrl.key,
+    url: json.data.url,
     height: image.height,
     width: image.width,
-    alt: image.alt,
+    alt: json.data.description,
+  });
+
+  return {
+    id: presignedUrl.key,
+    url: json.data.url,
+    height: image.height,
+    width: image.width,
+    alt: json.data.description,
   };
 }

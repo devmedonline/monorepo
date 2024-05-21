@@ -11,7 +11,7 @@ const YEAR = new Date().getFullYear();
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center bg-gradient-to-t from-gray-200 to-background">
+    <main className="flex flex-col items-center bg-gradient-to-t from-gray-200 dark:from-gray-950 to-background">
       <SimpleHeader />
       <FloatingDashboardButton />
 
@@ -69,6 +69,7 @@ export default function Home() {
               width: iPhoneMockup.width * 0.2,
             }}
           />
+
           <FeatureListItem
             title="Lorem ipsum dolor sit amet."
             description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
@@ -88,7 +89,7 @@ export default function Home() {
           Sobre Nós
         </h2>
 
-        <p className="text-lg mt-8">
+        <p className="text-lg mt-8 text-center">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </p>

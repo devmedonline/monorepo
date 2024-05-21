@@ -24,12 +24,13 @@ export function GeneralCategoryImageDropdownTrigger({
     ? "Ocultar categoria"
     : "Exibir categoria";
   return (
-    <button className="rounded-xl rounded-tl flex-shrink-0 cursor-pointer overflow-hidden relative group">
+    <button className="rounded-xl rounded-tl bg-secondary flex-shrink-0 cursor-pointer overflow-hidden relative group">
       <Image
         width={64}
         height={64}
         src={generalCategory.thumbnail}
         alt={generalCategory.name}
+        className="aspect-square object-cover"
       />
 
       <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity grid grid-cols-2 grid-rows-2">

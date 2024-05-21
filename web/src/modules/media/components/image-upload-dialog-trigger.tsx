@@ -16,13 +16,14 @@ import {
   FormMessage,
 } from "@/shared/components/ui/form";
 import { Input } from "@/shared/components/ui/input";
-import { ScrollArea } from "@/shared/components/ui/scroll-area";
 import { useToast } from "@/shared/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useId } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useId, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { MEDIA_LISTING_QUERY_KEY } from "../hooks/use-media-listing-search-query";
 
 const formSchema = z.object({
   image: createImageFileSchema().optional(),
@@ -67,6 +68,8 @@ export function ImageUploadDialogTrigger({
 
   const { toast } = useToast();
 
+  const [isOpen, setIsOpen] = useState(false);
+
   const listFormat = new Intl.ListFormat("pt-BR", {
     style: "long",
     type: "disjunction",
@@ -104,6 +107,8 @@ export function ImageUploadDialogTrigger({
     },
   });
 
+  const queryClient = useQueryClient();
+
   const onSubmit = async (values: ImageUploadFormValues) => {
     try {
       const firstImage = values.image ? values.image[0] : null;
@@ -121,17 +126,21 @@ export function ImageUploadDialogTrigger({
       });
 
       onSuccessfulUpload(data);
+      queryClient.invalidateQueries({ queryKey: [MEDIA_LISTING_QUERY_KEY] });
+      setIsOpen(false);
     } catch (error) {
       onFailedUpload(
         error instanceof Error ? error : new Error("Unknown error")
       );
+    } finally {
+      form.reset();
     }
   };
 
   const disabled = process.env.NEXT_PUBLIC_FLAG_DISABLE_IMAGE_UPLOAD === "true";
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen} aria-labelledby={id}>
       <DialogTrigger asChild disabled={disabled}>
         {children}
       </DialogTrigger>
@@ -143,41 +152,39 @@ export function ImageUploadDialogTrigger({
           </p>
         </DialogContent>
       ) : (
-        <DialogContent className="max-h-[90dvh]">
+        <DialogContent className="max-h-[90dvh] h-fit">
           <DialogHeader>Imagem</DialogHeader>
           <Form {...form}>
             <form
               encType="multipart/form-data"
               id={id}
               method="POST"
-              className="w-full space-y-3"
+              className="w-full space-y-3 h-full"
               onSubmit={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
                 return form.handleSubmit(onSubmit)(e);
               }}
             >
-              <ScrollArea className="h-96 max-w-full">
-                <FormField
-                  control={form.control}
-                  name="image"
-                  render={({ field }) => (
-                    <FormItem className="w-full">
-                      <FormLabel className="sr-only">Imagem</FormLabel>
-                      <FormControl>
-                        <FileDropZone dropzoneState={imageDropzone}>
-                          <FileDropZone.Container>
-                            <FileDropZone.Input {...field} />
-                            <FileDropZone.Preview />
-                            <FileDropZone.Button />
-                          </FileDropZone.Container>
-                        </FileDropZone>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </ScrollArea>
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="sr-only">Imagem</FormLabel>
+                    <FormControl>
+                      <FileDropZone dropzoneState={imageDropzone}>
+                        <FileDropZone.Container>
+                          <FileDropZone.Input {...field} />
+                          <FileDropZone.Preview />
+                          <FileDropZone.Button />
+                        </FileDropZone.Container>
+                      </FileDropZone>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               <FormField
                 control={form.control}
@@ -197,7 +204,7 @@ export function ImageUploadDialogTrigger({
               />
 
               <Button type="submit" className="w-full gap-2 items-center">
-                Salvar
+                {form.formState.isSubmitting ? "Enviando..." : "Enviar"}
               </Button>
             </form>
           </Form>

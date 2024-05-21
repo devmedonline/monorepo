@@ -32,7 +32,7 @@ export function SimpleHeader() {
         <Button
           variant="outline"
           size="icon"
-          className="font-bold text-lg flex-shrink-0 lg:hidden"
+          className="font-bold text-lg flex-shrink-0 lg:hidden z-50"
           onClick={() => setOpen(!open)}
         >
           <LucideMenu size={24} />
@@ -40,15 +40,16 @@ export function SimpleHeader() {
 
         <nav
           className={cn(
-            "gap-4 hidden lg:flex lg:flex-row lg:relative lg:top-0 lg:left-0 lg:right-0 lg:justify-center lg:items-center lg:shadow-none lg:bg-transparent lg:p-0",
+            "gap-4 hidden top-full left-4 right-4",
+            "lg:flex lg:flex-row lg:relative lg:top-0 lg:left-0 lg:right-0 lg:justify-center lg:items-center lg:shadow-none lg:bg-transparent lg:p-0",
             open &&
-              "flex absolute top-full left-4 right-4 border rounded-xl p-4 justify-center bg-card shadow-md z-50"
+              "flex absolute border rounded-xl p-4 justify-center bg-card shadow-md"
           )}
         >
           <HeaderItemList />
         </nav>
 
-        <SignInButtonList />
+        <SignInButtonList className="z-50" />
       </div>
     </header>
   );
@@ -66,7 +67,9 @@ function HeaderItemList() {
         whileInView="animate"
         viewport={{ once: true }}
       >
-        <Link href="#features">Recursos</Link>
+        <Link className="text-primary dark:text-violet-400" href="#features">
+          Recursos
+        </Link>
       </MotionButton>
 
       <MotionButton
@@ -78,7 +81,9 @@ function HeaderItemList() {
         whileInView="animate"
         viewport={{ once: true }}
       >
-        <Link href="#about">Sobre</Link>
+        <Link className="text-primary dark:text-violet-400" href="#about">
+          Sobre
+        </Link>
       </MotionButton>
 
       <MotionButton
@@ -90,7 +95,9 @@ function HeaderItemList() {
         whileInView="animate"
         viewport={{ once: true }}
       >
-        <Link href="#contact">Contatos</Link>
+        <Link className="text-primary dark:text-violet-400" href="#contact">
+          Contatos
+        </Link>
       </MotionButton>
     </>
   );

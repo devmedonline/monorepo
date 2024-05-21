@@ -1,3 +1,4 @@
+import { MediaPickerDialogTrigger } from "@/modules/media/components/media-picker-dialog-trigger";
 import { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
@@ -69,15 +70,18 @@ export function CreateNewCategoryForm({
         <FormField
           control={form.control}
           name="thumbnail"
-          render={({ field }) => (
+          render={() => (
             <FormItem>
               <FormLabel>Thumbnail</FormLabel>
-              <FormControl>
-                <Input placeholder="URL da imagem" {...field} />
+              <FormControl className="w-full">
+                <MediaPickerDialogTrigger
+                  onPick={(media) => form.setValue("thumbnail", media.url)}
+                >
+                  <Button type="button" className="w-full" variant="outline">
+                    Selecionar thumbnail
+                  </Button>
+                </MediaPickerDialogTrigger>
               </FormControl>
-              <FormDescription>
-                URL da imagem que será exibida no app
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
