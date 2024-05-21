@@ -24,6 +24,7 @@ model User {
   simulations      Simulation[]
   simulationPhases SimulationPhase[]
   actionTokens     ActionToken[]
+  medias           Media[]
 }
 
 // A ban is a ban that is given to a user
@@ -147,4 +148,25 @@ model Tag {
   updatedAt   DateTime     @updatedAt
   posts       Post[]
   simulations Simulation[]
+}
+
+model Media {
+  id          String     @id @unique
+  url         String
+  type        String     @default("image") // image, video, audio
+  description String?
+  author      User       @relation(fields: [authorId], references: [id])
+  authorId    String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  tags        MediaTag[]
+}
+
+model MediaTag {
+  id        String   @id @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  media     Media?   @relation(fields: [mediaId], references: [id])
+  mediaId   String?
 }
