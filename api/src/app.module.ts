@@ -13,6 +13,7 @@ import { SimulationCategoryModule } from './simulation-category/simulation-categ
 import { SimulationPhaseModule } from './simulation-phase/simulation-phase.module';
 import { SimulationModule } from './simulation/simulation.module';
 import { UserModule } from './user/user.module';
+import { FileUploadModule } from './file-upload/file-upload.module';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -37,6 +38,7 @@ const isDev = process.env.NODE_ENV === 'development';
     SimulationModule,
     SimulationPhaseModule,
     EmailModule,
+    FileUploadModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
