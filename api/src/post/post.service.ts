@@ -1,5 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
+import {
+  PublicationStatus,
+  isPublished,
+} from 'src/common/constants/publication-status';
+import { PageMetaDto } from 'src/common/dtos/page-meta.dto';
+import { PageDto } from 'src/common/dtos/page.dto';
 import { PrismaService } from 'src/prisma.service';
 import { UserService } from 'src/user/user.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -37,27 +43,50 @@ export class PostService {
     return post;
   }
 
-  async findAll(filters?: FilterPostDto) {
-    return this.prisma.post.findMany({
-      where: {
-        title: { contains: filters?.search },
-        publicAvailable: filters?.publicAvailable,
-        generalCategoryId: filters?.generalCategoryId,
-        authorId: filters?.authorId,
-      },
+  async search(options: FilterPostDto) {
+    const filters = {
+      OR: [
+        { title: { contains: options?.search } },
+        { publicAvailable: this.getPublicFilter(options?.publicAvailable) },
+        { generalCategoryId: options?.generalCategoryId },
+        { authorId: options?.authorId },
+      ],
+    };
+
+    const [results, total] = await this.prisma.$transaction([
+      this.prisma.post.findMany({
+        where: filters,
+        include: {
+          generalCategory: true,
+          author: {
+            select: {
+              id: true,
+              name: true,
+              avatar: true,
+            },
+          },
+          tags: {
+            select: {
+              id: true,
+              name: true,
+              createdAt: true,
+              updatedAt: true,
+            },
+          },
+        },
+      }),
+      this.prisma.post.count({ where: filters }),
+    ]);
+
+    const paginationMeta = new PageMetaDto({
+      itemCount: total,
+      pageOptionsDto: options,
     });
+
+    return new PageDto(results, paginationMeta);
   }
 
-  async findAllPublicallyAvailable(filters?: FilterPostDto) {
-    return this.prisma.post.findMany({
-      where: {
-        title: { contains: filters?.search },
-        publicAvailable: true,
-        generalCategoryId: filters?.generalCategoryId,
-        authorId: filters?.authorId,
-      },
-    });
-  }
+  async findAllPublicallyAvailable(filters?: FilterPostDto) {}
 
   async findOne(id: string) {
     const post = await this.prisma.post.findUnique({
@@ -106,5 +135,9 @@ export class PostService {
         publicAvailable,
       },
     });
+  }
+
+  private getPublicFilter(status: PublicationStatus): boolean | undefined {
+    return status ? isPublished(status) : undefined;
   }
 }

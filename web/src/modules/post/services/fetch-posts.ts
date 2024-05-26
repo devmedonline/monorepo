@@ -1,11 +1,8 @@
 import { fetchApi } from "@/shared/lib/fetch-api";
-import { PaginationInput } from "@/shared/types/pagination";
-import { GeneralCategory } from "../types/general-category";
+import { FilterPostDto } from "../types/post";
 
-export type GeneralCategoriesInput = PaginationInput;
-
-export async function fetchGeneralCategories(
-  params: GeneralCategoriesInput = {}
+export async function fetchPosts(
+  params: FilterPostDto = {}
 ): Promise<{ generalCategories: GeneralCategory[] }> {
   const searchParams = new URLSearchParams();
 
