@@ -1,12 +1,10 @@
 import { fetchApi } from "@/shared/lib/fetch-api";
-import { CreateGeneralCategoryDto } from "../types/general-category";
+import { CreatePostDto } from "../types/post";
 
-export async function fetchCreateGeneralCategory(
-  category: CreateGeneralCategoryDto
-) {
-  const response = await fetchApi("/general-category", {
+export async function fetchCreatePost(post: CreatePostDto) {
+  const response = await fetchApi("/post", {
     method: "POST",
-    body: JSON.stringify(category),
+    body: JSON.stringify(post),
   });
 
   return response.data;

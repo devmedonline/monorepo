@@ -4,7 +4,7 @@ export type CreatePostDto = {
   title: string;
   content: string;
   thumbnail: string;
-  publicAvailable: boolean;
+  publicAvailable: "draft" | "published" | "any";
   generalCategoryId: string;
 };
 
@@ -16,3 +16,5 @@ export type FilterPostDto = PaginationInput & {
 };
 
 export type UpdatePostDto = Partial<CreatePostDto>;
+
+export type Post = any;

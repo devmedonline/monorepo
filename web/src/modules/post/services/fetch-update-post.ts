@@ -1,20 +1,20 @@
 import { fetchApi } from "@/shared/lib/fetch-api";
-import { UpdateGeneralCategoryDto } from "../types/general-category";
+import { UpdatePostDto } from "../types/post";
 
-type UpdateGeneralCategoryInput = {
+type UpdatePostInput = {
   id: string;
-  category: UpdateGeneralCategoryDto;
+  post: UpdatePostDto;
 };
 
-export async function fetchUpdateGeneralCategory(
-  options: UpdateGeneralCategoryInput
-) {
-  const response = await fetchApi("/general-category/" + options.id, {
+export async function fetchUpdatePost(options: UpdatePostInput) {
+  const response = await fetchApi("/post/" + options.id, {
     method: "PATCH",
     body: JSON.stringify({
-      name: options.category.name,
-      description: options.category.description,
-      thumbnail: options.category.thumbnail,
+      title: options.post.title,
+      content: options.post.content,
+      thumbnail: options.post.thumbnail,
+      generalCategoryId: options.post.generalCategoryId,
+      publicAvailable: options.post.publicAvailable,
     }),
   });
 

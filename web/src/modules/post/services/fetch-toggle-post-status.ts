@@ -1,8 +1,8 @@
 import { fetchApi } from "@/shared/lib/fetch-api";
 
-export async function fetchUpdateGeneralCategory(id: string) {
+export async function fetchUpdatePost(id: string) {
   const response = await fetchApi(
-    "/general-category/" + id + "/toggle-public-availability",
+    "/post/" + id + "/toggle-public-availability",
     {
       method: "PATCH",
     }

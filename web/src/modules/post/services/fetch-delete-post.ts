@@ -1,7 +1,7 @@
 import { fetchApi } from "@/shared/lib/fetch-api";
 
-export async function fetchDeleteGeneralCategory(id: string) {
-  const response = await fetchApi("/general-category/" + id, {
+export async function fetchDeletePost(id: string) {
+  const response = await fetchApi("/post/" + id, {
     method: "DELETE",
   });
 

@@ -1,30 +1,30 @@
 import { fetchApi } from "@/shared/lib/fetch-api";
-import { FilterPostDto } from "../types/post";
+import { FilterPostDto, Post } from "../types/post";
 
 export async function fetchPosts(
   params: FilterPostDto = {}
-): Promise<{ generalCategories: GeneralCategory[] }> {
+): Promise<{ posts: Post[] }> {
   const searchParams = new URLSearchParams();
 
-  if (params.search) {
-    searchParams.set("search", params.search);
+  for (const queryKey in params) {
+    if (Object.prototype.hasOwnProperty.call(params, queryKey)) {
+      const element = params[queryKey as keyof FilterPostDto];
+
+      if (element) {
+        searchParams.set(queryKey, element.toString());
+      } else {
+        searchParams.delete(queryKey);
+      }
+    }
   }
 
-  if (params.page) {
-    searchParams.set("page", String(params.page));
-  }
+  const url = `/post?${searchParams.toString()}`;
 
-  if (params.take) {
-    searchParams.set("take", String(params.take));
-  }
-
-  const url = `/general-category?${searchParams.toString()}`;
-
-  const response = await fetchApi<GeneralCategory[]>(url, {
+  const response = await fetchApi<Post[]>(url, {
     method: "GET",
   });
 
   return {
-    generalCategories: response.data,
+    posts: response.data,
   };
 }
