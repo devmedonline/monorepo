@@ -126,7 +126,7 @@ function FileDropZonePreviewAcceptedUnit({
       <img
         src={image.src}
         alt={file.name}
-        className="w-full h-auto object-cover rounded min-h-[250px] bg-muted py-4"
+        className="w-full h-auto object-cover rounded min-h-[250px] bg-muted py-4 max-h-[30dvh]"
       />
 
       <div className="flex justify-start divide-x">

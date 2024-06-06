@@ -19,10 +19,10 @@ export default async function VerifyEmailPage({
   });
 
   return (
-    <main className="grid place-items-center h-screen w-screen bg-primary">
+    <main className="grid place-items-center h-screen w-screen bg-primary container">
       <div className="flex flex-col items-center gap-4 p-8 bg-background text-foreground rounded-lg shadow-lg border">
         <h1 className="text-3xl font-semibold flex items-center">
-          <LucideMailCheck size={28} className="mr-4" />
+          <LucideMailCheck size={28} className="mr-4 flex-shrink-0" />
           Verificação de Email
         </h1>
 

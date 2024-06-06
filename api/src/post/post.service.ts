@@ -1,9 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
-import {
-  PublicationStatus,
-  isPublished,
-} from 'src/common/constants/publication-status';
+import { PublicationStatus } from 'src/common/constants/publication-status';
 import { PageMetaDto } from 'src/common/dtos/page-meta.dto';
 import { PageDto } from 'src/common/dtos/page.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -47,11 +44,13 @@ export class PostService {
     const filters = {
       OR: [
         { title: { contains: options?.search } },
-        { publicAvailable: this.getPublicFilter(options?.publicAvailable) },
         { generalCategoryId: options?.generalCategoryId },
         { authorId: options?.authorId },
+        ...this.getPublicFilter(options?.publicAvailable),
       ],
     };
+
+    console.log('filters', filters);
 
     const [results, total] = await this.prisma.$transaction([
       this.prisma.post.findMany({
@@ -74,9 +73,16 @@ export class PostService {
             },
           },
         },
+        orderBy: {
+          createdAt: 'desc',
+        },
+        skip: options.skip,
+        take: options.take,
       }),
       this.prisma.post.count({ where: filters }),
     ]);
+
+    console.log('results', results);
 
     const paginationMeta = new PageMetaDto({
       itemCount: total,
@@ -137,7 +143,12 @@ export class PostService {
     });
   }
 
-  private getPublicFilter(status: PublicationStatus): boolean | undefined {
-    return status ? isPublished(status) : undefined;
+  private getPublicFilter(status: PublicationStatus) {
+    if (status === 'any') {
+      return [{ publicAvailable: true }, { publicAvailable: false }];
+    } else {
+      const isPublished = status === PublicationStatus.PUBLISHED;
+      return [{ publicAvailable: isPublished }];
+    }
   }
 }

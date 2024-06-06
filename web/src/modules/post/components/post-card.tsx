@@ -32,6 +32,7 @@ export function PostCard() {
   }, []);
 
   const postQuery = usePostQuery({
+    publicAvailable: "any",
     search: debouncedSearch,
     page: currentPage,
     take: 3,
@@ -100,7 +101,7 @@ export function PostCard() {
           variant="outline"
           asChild
         >
-          <Link href="/post" target="__blank">
+          <Link href="/adm/post" target="__blank">
             Criar nova publicação
             <PlusIcon size={16} aria-hidden className="ml-2" />
           </Link>

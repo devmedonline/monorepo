@@ -47,6 +47,9 @@ export function MediaListing({ onPick, className }: MediaListingProps) {
 
   const { toast } = useToast();
 
+  const hasNoImages =
+    mediaQuery.isSuccess && mediaQuery.data.media.length === 0;
+
   return (
     <>
       <CardContent className={cn("h-full w-full", className)}>
@@ -82,6 +85,13 @@ export function MediaListing({ onPick, className }: MediaListingProps) {
           <div>
             Ocorreu um erro ao carregar as mídias: {mediaQuery.error.message}
           </div>
+        )}
+
+        {hasNoImages && (
+          <p className="text-center text-muted-foreground pb-4 pt-8">
+            Nenhuma mídia encontrada. Adicione uma nova mídia clicando no botão
+            com sinal de adição.
+          </p>
         )}
 
         {mediaQuery.isSuccess && (
@@ -122,7 +132,11 @@ export function MediaListing({ onPick, className }: MediaListingProps) {
             aria-label="Adicionar mídia"
             size="icon"
             variant="outline"
+            className="relative"
           >
+            {hasNoImages && (
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            )}
             <PlusIcon />
           </Button>
         </ImageUploadDialogTrigger>
