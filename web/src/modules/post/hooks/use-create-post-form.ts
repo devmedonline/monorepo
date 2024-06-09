@@ -1,5 +1,6 @@
 import { useToast } from "@/shared/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -36,6 +37,7 @@ export function useCreatePostForm({ onSuccess }: { onSuccess?: () => void }) {
     },
   });
 
+  const router = useRouter();
   const { toast } = useToast();
   const createPostMutation = useCreatePostMutation();
 
@@ -84,8 +86,9 @@ export function useCreatePostForm({ onSuccess }: { onSuccess?: () => void }) {
   useEffect(() => {
     if (createPostMutation.isSuccess) {
       localStorage.removeItem("post-form");
+      router.push("/adm");
     }
-  }, [createPostMutation.isSuccess]);
+  }, [createPostMutation.isSuccess, router]);
 
   // Clear local storage when form is unmounted
   useEffect(() => {

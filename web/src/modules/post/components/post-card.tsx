@@ -90,6 +90,12 @@ export function PostCard() {
             ))}
           </ul>
         )}
+
+        {postQuery.isSuccess && postQuery.data.posts.length === 0 && (
+          <p className="text-muted-foreground text-sm text-center mt-4">
+            Nenhuma publicação encontrada
+          </p>
+        )}
       </CardContent>
 
       <CardFooter className="justify-end items-center flex space-x-2">
