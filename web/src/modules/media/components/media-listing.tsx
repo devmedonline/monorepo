@@ -88,7 +88,7 @@ export function MediaListing({ onPick, className }: MediaListingProps) {
         )}
 
         {hasNoImages && (
-          <p className="text-center text-muted-foreground pb-4 pt-8">
+          <p className="text-center text-sm text-muted-foreground">
             Nenhuma mídia encontrada. Adicione uma nova mídia clicando no botão
             com sinal de adição.
           </p>

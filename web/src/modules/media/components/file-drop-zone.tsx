@@ -156,7 +156,13 @@ function FileDropZoneButton({ className }: FileDropZoneButtonProps) {
   }
 
   return (
-    <button type="button" className={cn("w-full h-full", className)}>
+    <button
+      type="button"
+      className={cn(
+        "w-full h-full text-sm text-muted-foreground min-h-28",
+        className
+      )}
+    >
       {dropzoneState.isDragActive ? (
         <p>Solte o arquivo aqui ...</p>
       ) : (
