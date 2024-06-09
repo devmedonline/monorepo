@@ -7,6 +7,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { PageOptionsWithSearchDto } from 'src/common/dtos/page-options.dto';
 import { BasicResponseWrapper } from 'src/common/entities/basic-response-wrapper.entity';
 import { CreateSimulationCategoryDto } from './dto/create-simulation-category.dto';
 import { UpdateSimulationCategoryDto } from './dto/update-simulation-category.dto';
@@ -30,10 +31,8 @@ export class SimulationCategoryController {
   }
 
   @Get()
-  async findAll() {
-    const simulationCategories = await this.simulationCategoryService.findAll();
-
-    return new BasicResponseWrapper({ data: simulationCategories });
+  async search(@Query() options: PageOptionsWithSearchDto) {
+    return this.simulationCategoryService.search(options);
   }
 
   @Get(':id')
@@ -41,14 +40,6 @@ export class SimulationCategoryController {
     const simulationCategory = await this.simulationCategoryService.findOne(id);
 
     return new BasicResponseWrapper({ data: simulationCategory });
-  }
-
-  @Get('search')
-  async search(@Query('search') search: string) {
-    const simulationCategories =
-      await this.simulationCategoryService.search(search);
-
-    return new BasicResponseWrapper({ data: simulationCategories });
   }
 
   @Patch(':id')

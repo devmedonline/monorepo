@@ -4,6 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
+import { PageMetaDto } from 'src/common/dtos/page-meta.dto';
+import { PageOptionsWithSearchDto } from 'src/common/dtos/page-options.dto';
+import { PageDto } from 'src/common/dtos/page.dto';
 import { PrismaService } from 'src/prisma.service';
 import { CreateSimulationCategoryDto } from './dto/create-simulation-category.dto';
 import { UpdateSimulationCategoryDto } from './dto/update-simulation-category.dto';
@@ -35,13 +38,32 @@ export class SimulationCategoryService {
     return this.prisma.simulationCategory.findMany();
   }
 
-  async search(search: string) {
-    return this.prisma.simulationCategory.findMany({
-      where: {
-        name: { contains: search },
-        description: { contains: search },
-      },
+  async search(pagination: PageOptionsWithSearchDto) {
+    const filter = pagination.search
+      ? {
+          OR: [
+            { name: { contains: pagination.search } },
+            { description: { contains: pagination.search } },
+          ],
+        }
+      : {};
+
+    const [results, total] = await this.prisma.$transaction([
+      this.prisma.simulationCategory.findMany({
+        skip: pagination.skip,
+        take: pagination.take,
+        orderBy: { name: pagination.order },
+        where: filter,
+      }),
+      this.prisma.simulationCategory.count({ where: filter }),
+    ]);
+
+    const paginationMeta = new PageMetaDto({
+      itemCount: total,
+      pageOptionsDto: pagination,
     });
+
+    return new PageDto(results, paginationMeta);
   }
 
   async findOne(id: string) {

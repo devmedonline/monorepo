@@ -3,6 +3,7 @@
 import { GeneralCategoriesCard } from "@/modules/general-category/components/general-categories-card";
 import { MediaListingCard } from "@/modules/media/components/media-listing-card";
 import { PostCard } from "@/modules/post/components/post-card";
+import { SimulationCategoriesCard } from "@/modules/simulation-category/components/simulation-categories-card";
 import { CurrentUserProfileCard } from "@/modules/user/components/current-user-profile-card";
 
 export default function AdmHome() {
@@ -12,6 +13,7 @@ export default function AdmHome() {
       <GeneralCategoriesCard />
       <MediaListingCard />
       <PostCard />
+      <SimulationCategoriesCard />
     </main>
   );
 }
