@@ -19,15 +19,15 @@ export function formatEntityTimestamps<T extends EntityTimestamps>(
   };
 
   if (entity.deletedAt) {
-    return `Deletado em ${toFriendlyDate(entity.deletedAt)}`;
+    return `Deletado ${toFriendlyDate(entity.deletedAt)}`;
   }
 
   if (entity.updatedAt && entity.updatedAt !== entity.createdAt) {
-    return `Atualizado em ${toFriendlyDate(entity.updatedAt)}`;
+    return `Atualizado ${toFriendlyDate(entity.updatedAt)}`;
   }
 
   if (entity.createdAt) {
-    return `Criado em ${toFriendlyDate(entity.createdAt)}`;
+    return `Criado ${toFriendlyDate(entity.createdAt)}`;
   }
 
   return "Sem informações de data";
