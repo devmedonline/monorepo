@@ -15,11 +15,12 @@ import {
 } from "@/shared/components/ui/popover";
 import { useDebouncedValue } from "@/shared/hooks/use-debounced-value";
 import { cn } from "@/shared/lib/utils";
-import { CheckCheck, ChevronsUpDown } from "lucide-react";
+import { CheckCheck, ChevronsUpDown, PlusIcon } from "lucide-react";
 import Image from "next/image";
 import { forwardRef, useState } from "react";
 import { useGeneralCategoryQuery } from "../hooks/use-general-category-search-query";
 import { GeneralCategory } from "../types/general-category";
+import { CreateNewCategoryDialogTrigger } from "./create-new-category-form";
 
 export const GeneralCategorySelector = forwardRef<
   HTMLInputElement,
@@ -39,6 +40,11 @@ export const GeneralCategorySelector = forwardRef<
     : [];
 
   const categoryName = categoryList.find((it) => it.id === value)?.name;
+
+  const isEmptyList =
+    !generalCategoriesQuery.isLoading &&
+    !generalCategoriesQuery.isError &&
+    categoryList.length === 0;
 
   return (
     <Popover>
@@ -70,9 +76,24 @@ export const GeneralCategorySelector = forwardRef<
             />
 
             <CommandEmpty>
-              {generalCategoriesQuery.isLoading
-                ? "Carregando..."
-                : "Nenhuma categoria encontrada"}
+              {generalCategoriesQuery.isLoading && "Carregando..."}
+              {generalCategoriesQuery.isError && "Erro ao carregar categorias"}
+
+              {isEmptyList && (
+                <CreateNewCategoryDialogTrigger>
+                  <Button
+                    className="mr-auto"
+                    title="Criar nova categoria"
+                    aria-label="Criar nova categoria"
+                    size="sm"
+                    variant="outline"
+                    type="button"
+                  >
+                    Criar nova categoria
+                    <PlusIcon size={16} aria-hidden className="ml-2" />
+                  </Button>
+                </CreateNewCategoryDialogTrigger>
+              )}
             </CommandEmpty>
 
             {categoryList.length > 0 && (

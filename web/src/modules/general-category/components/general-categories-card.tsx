@@ -98,6 +98,13 @@ export function GeneralCategoriesCard() {
             ))}
           </ul>
         )}
+
+        {generalCategoriesQuery.isSuccess &&
+          generalCategoriesQuery.data.generalCategories.length === 0 && (
+            <p className="text-center text-sm text-muted-foreground">
+              Nenhuma categoria encontrada
+            </p>
+          )}
       </CardContent>
 
       <CardFooter className="justify-end items-center flex space-x-2">

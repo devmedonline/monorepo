@@ -1,3 +1,5 @@
+import { PostPublicAvailable } from "@/modules/post/types/post";
+import { PublicationStatusBadge } from "@/shared/components/publication-status-badge";
 import { GeneralCategory } from "../types/general-category";
 import { GeneralCategoryImageDropdownTrigger } from "./general-category-image-dropdown-trigger";
 
@@ -18,6 +20,15 @@ export function GeneralCategoryListItem({
         <p className="text-sm text-muted-foreground line-clamp-2">
           {generalCategory.description}
         </p>
+        <div className="flex items-start justify-between gap-2">
+          <PublicationStatusBadge
+            status={
+              generalCategory.publicAvailable
+                ? PostPublicAvailable.Published
+                : PostPublicAvailable.Draft
+            }
+          />
+        </div>
       </div>
     </li>
   );
