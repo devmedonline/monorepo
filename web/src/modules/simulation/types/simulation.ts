@@ -1,12 +1,13 @@
 import { Author } from "@/modules/post/types/post";
 import { SimulationCategory } from "@/modules/simulation-category/types/simulation-category";
+import { SimulationPhaseEssentialData } from "@/modules/simulation-phase/types/simulation-phase";
 import { PaginationInput } from "@/shared/types/pagination";
 
 export type CreateSimulationDto = {
   title: string;
   content: string;
   thumbnail: string;
-  publicAvailable: "draft" | "published" | "any";
+  publicAvailable: boolean;
   simulationCategoryId: string;
 };
 
@@ -31,15 +32,5 @@ export type Simulation = {
   updatedAt: string;
   simulationCategoryId: string;
   simulationCategory: SimulationCategory;
-  phases: SimulationPhaseEssentialData[];
-};
-
-export type SimulationPhaseEssentialData = {
-  id: string;
-  title: string;
-  thumbnail: string;
-};
-
-export type SimulationPhase = SimulationPhaseEssentialData & {
-  content: string;
+  simulationPhases: SimulationPhaseEssentialData[];
 };

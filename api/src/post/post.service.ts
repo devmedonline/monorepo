@@ -143,6 +143,14 @@ export class PostService {
     });
   }
 
+  async remove(id: string) {
+    return this.prisma.post.delete({
+      where: {
+        id,
+      },
+    });
+  }
+
   private getPublicFilter(status: PublicationStatus) {
     if (status === 'any') {
       return [{ publicAvailable: true }, { publicAvailable: false }];

@@ -17,13 +17,14 @@ export function MediaListingListItem({
 }: MediaListingListItemProps) {
   const showPick = Boolean(onPick);
   return (
-    <li className="relative w-full h-fit rounded-lg overflow-hidden">
+    <li className="relative w-full rounded-lg overflow-hidden aspect-square">
       <button className="aspect-square w-full bg-secondary flex-shrink-0 cursor-pointer overflow-hidden group">
         <Image
           width={140}
           height={140}
           src={media.url}
           alt={media.description}
+          className="object-cover w-full h-full transition-transform transform group-hover:scale-110"
         />
 
         <div className="group absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-wrap h-full">

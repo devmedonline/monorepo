@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, IsUUID, IsUrl } from 'class-validator';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+  IsUrl,
+} from 'class-validator';
 
 export class CreateSimulationDto {
   @IsString()
@@ -12,6 +18,9 @@ export class CreateSimulationDto {
   @IsUrl()
   @IsNotEmpty()
   thumbnail: string;
+
+  @IsBoolean()
+  publicAvailable: boolean;
 
   @IsUUID()
   simulationCategoryId: string;

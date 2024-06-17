@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -53,6 +54,14 @@ export class SimulationCategoryController {
     );
 
     return new BasicResponseWrapper({ data: updatedSimulationCategory });
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    const deletedSimulationCategory =
+      await this.simulationCategoryService.remove(id);
+
+    return new BasicResponseWrapper({ data: deletedSimulationCategory });
   }
 
   @Patch(':id/toggle-public-availability')

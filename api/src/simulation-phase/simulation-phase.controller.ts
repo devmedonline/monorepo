@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -77,6 +78,13 @@ export class SimulationPhaseController {
     );
 
     return new BasicResponseWrapper({ data: updateSimulationPhase });
+  }
+
+  @Delete(':id')
+  @CheckJWT()
+  async delete(@Param('id') id: string) {
+    const deleteSimulationPhase = await this.simulationPhaseService.remove(id);
+    return new BasicResponseWrapper({ data: deleteSimulationPhase });
   }
 
   @Patch(':id/toggle-public-availability')

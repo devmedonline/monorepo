@@ -17,6 +17,7 @@ export class SimulationService {
         content: createSimulationDto.content,
         title: createSimulationDto.title,
         thumbnail: createSimulationDto.thumbnail,
+        publicAvailable: createSimulationDto.publicAvailable,
         author: {
           connect: {
             id: authorId,
@@ -42,6 +43,9 @@ export class SimulationService {
         authorId: filters.authorId,
         simulationCategoryId: filters.simulationCategoryId,
       },
+      include: {
+        simulationPhases: true,
+      },
     });
 
     return simulations;
@@ -58,6 +62,14 @@ export class SimulationService {
     });
 
     return simulation;
+  }
+
+  async remove(id: string) {
+    return this.prisma.simulation.delete({
+      where: {
+        id,
+      },
+    });
   }
 
   async update(id: string, updateSimulationDto: UpdateSimulationDto) {

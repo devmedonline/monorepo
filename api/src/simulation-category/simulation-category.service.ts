@@ -84,6 +84,10 @@ export class SimulationCategoryService {
     });
   }
 
+  async remove(id: string) {
+    return this.prisma.simulationCategory.delete({ where: { id } });
+  }
+
   async togglePublicAvailability(id: string) {
     const simulationCategory = await this.prisma.simulationCategory.findUnique({
       where: { id },

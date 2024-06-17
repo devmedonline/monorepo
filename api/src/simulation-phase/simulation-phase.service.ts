@@ -126,6 +126,20 @@ export class SimulationPhaseService {
     });
   }
 
+  async remove(id: string) {
+    const simulationPhase = await this.prisma.simulationPhase.findUnique({
+      where: { id },
+    });
+
+    if (!simulationPhase) {
+      throw new NotFoundException('SimulationPhase not found');
+    }
+
+    return this.prisma.simulationPhase.delete({
+      where: { id },
+    });
+  }
+
   async swapPositions(
     simulationPhaseId: string,
     simulationPhaseToSwapId: string,

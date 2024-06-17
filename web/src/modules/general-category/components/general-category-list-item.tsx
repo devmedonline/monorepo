@@ -11,7 +11,7 @@ export function GeneralCategoryListItem({
   generalCategory,
 }: GeneralCategoryListItemProps) {
   return (
-    <li className="flex items-center gap-3">
+    <li className="flex items-start gap-3">
       <GeneralCategoryImageDropdownTrigger generalCategory={generalCategory} />
       <div className="flex flex-col gap-1">
         <h3 className="text-base font-semibold text-primary line-clamp-2 leading-tight">

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -49,6 +50,16 @@ export class PostController {
     const updatedPost = await this.postService.update(id, updatePostDto);
 
     return new BasicResponseWrapper({ data: updatedPost });
+  }
+
+  @Delete(':id')
+  @CheckJWT()
+  async delete(@Param('id') id: string) {
+    await this.postService.remove(id);
+
+    return new BasicResponseWrapper({
+      data: { message: 'Post deletado com sucesso' },
+    });
   }
 
   @Patch(':id/toggle-public-availability')

@@ -23,7 +23,7 @@ export function TextEditor({ content, onChange, className }: TextEditorProps) {
       <EditorContent
         editor={editor}
         className={cn(
-          "dark:text-white prose max-w-full prose-img:rounded mt-2 rounded border focus-within:ring-2 focus-within:ring-ring focus-within:ring-opacity-50",
+          "dark:prose-invert prose max-w-full prose-img:rounded mt-2 rounded border focus-within:ring-2 focus-within:ring-ring focus-within:ring-opacity-50",
           className
         )}
       />

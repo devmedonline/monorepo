@@ -2,6 +2,7 @@
 
 import { ThemeOptions } from "@/modules/layout/components/theme-options";
 import { CardContentError } from "@/shared/components/card-content-error";
+import { Button } from "@/shared/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,6 +11,13 @@ import {
 } from "@/shared/components/ui/card";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { cn } from "@/shared/lib/utils";
+import {
+  LucideCheck,
+  LucideKey,
+  LucideLogOut,
+  LucideMail,
+  LucideX,
+} from "lucide-react";
 import Image from "next/image";
 import { useCurrentUserQuery } from "../hooks/use-current-user-query";
 
@@ -61,7 +69,7 @@ export function CurrentUserProfileCard() {
   const userData = currentUserDataQuery.data;
 
   return (
-    <Card>
+    <Card className="flex flex-col">
       <CardHeader className="flex space-x-4 flex-row items-center">
         <Image
           src={userData.avatar}
@@ -85,16 +93,38 @@ export function CurrentUserProfileCard() {
         </div>
 
         <ThemeOptions className="mt-4" />
+
+        <Button className="mt-4 w-full">
+          Sair da conta
+          <LucideLogOut size={16} className="ml-2" />
+        </Button>
+
+        <div className="w-full flex gap-2 mt-2">
+          <Button className="w-full">
+            Alterar senha
+            <LucideKey size={16} className="ml-2" />
+          </Button>
+          <Button className="w-full">
+            Alterar e-mail
+            <LucideMail size={16} className="ml-2" />
+          </Button>
+        </div>
       </CardContent>
 
-      <CardFooter>
+      <CardFooter className="mt-auto">
         <strong
           className={cn(
-            "text-sm font-semibold",
+            "text-sm font-semibold mt-auto flex items-center",
             userData.verified ? "text-green-500" : "text-red-500"
           )}
         >
-          {userData.verified ? "Verificado" : "Não verificado"}
+          {userData.verified ? "Você já foi verificado" : "Não verificado"}
+
+          {userData.verified ? (
+            <LucideCheck size={16} className="ml-2" />
+          ) : (
+            <LucideX size={16} className="ml-2" />
+          )}
         </strong>
       </CardFooter>
     </Card>
