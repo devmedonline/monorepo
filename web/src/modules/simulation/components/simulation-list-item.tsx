@@ -35,7 +35,7 @@ export function SimulationListItem({ simulation }: SimulationListItemProps) {
         </div>
       </div>
 
-      <ol className="flex gap-2 items-start mt-2">
+      <ol className="flex gap-2 items-start mt-2 h-16">
         {simulation.simulationPhases.length === 0 && (
           <li className="text-muted-foreground text-sm w-full">
             <CreateNewSimulationPhaseDialogTrigger simulationId={simulation.id}>
@@ -48,6 +48,7 @@ export function SimulationListItem({ simulation }: SimulationListItemProps) {
 
         {simulation.simulationPhases.map((phase) => (
           <li key={phase.id} className="h-fit">
+            <pre>{JSON.stringify(phase)}</pre>
             <SimulationPhaseImageDropdownTrigger simulationPhase={phase} />
           </li>
         ))}

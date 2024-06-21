@@ -32,6 +32,8 @@ export function useUpdateSimulationPhaseForm({
     if (simulationPhaseQuery.isSuccess) {
       const simulationPhase = simulationPhaseQuery.data;
 
+      console.log(simulationPhase);
+
       form.reset({
         id: simulationPhase.id,
         title: simulationPhase.title,

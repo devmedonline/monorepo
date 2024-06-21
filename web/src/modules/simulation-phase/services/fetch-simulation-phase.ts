@@ -4,10 +4,7 @@ import { SimulationPhase } from "../types/simulation-phase";
 export async function fetchSimulationPhase(
   simulationPhaseId: string
 ): Promise<SimulationPhase> {
-  const searchParams = new URLSearchParams();
-
-  searchParams.set("simulationPhaseId", String(simulationPhaseId));
-  const url = `/simulation-phase/${searchParams.toString()}`;
+  const url = `/simulation-phase/${simulationPhaseId}`;
 
   const response = await fetchApi<SimulationPhase>(url, {
     method: "GET",
