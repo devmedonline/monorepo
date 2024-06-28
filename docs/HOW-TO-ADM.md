@@ -13,6 +13,8 @@ Usuários administradores podem então alterar os dados do banco de dados, alter
 
 1. Acesse a aplicação em [`http://localhost:3000/admin`](http://localhost:3000/admin) durante desenvolvimento e [`devmed.online`](devmed.online) em produção.
 
+![Página inicial](./assets/inicial.png)
+
 2. Faça cadastro com um e-mail, senha e o seu nome.
 
 ![Cadastro](./assets/cadastro.png)
@@ -36,6 +38,7 @@ Usuários administradores podem então alterar os dados do banco de dados, alter
 8. Na página administrativa, você pode ver uma grade de cartões com diversas funcionalidades da aplicação. A maior parte dos pontos de acesso estão nesta única página.
 
 ![Página administrativa](./assets/admin.png)
+![Página administrativa](./assets/admin.jpeg)
 
 9. O primeiro cartão é o do seu perfil. Nele você pode ver sua situação cadastral, um botão para alterar sua senha, outro para alterar seu e-mail e um botão para sair da aplicação.
 
@@ -72,7 +75,7 @@ Ao clicar no botão com o ícone de lápis, será aberta uma caixa de dialogo co
 
 Ao clicar no botão com o ícone de lixeira, será aberta uma caixa de dialogo de confirmação. Clique em "Sim" para excluir a categoria. Uma categoria não é excluída se houver publicações associadas a ela.
 
-![Excluir categoria](./assets/excluir-categoria.png)
+![Excluir categoria](./assets/deletar-categoria.png)
 
 Como alternativa a exclusão, você pode clicar no botão com o ícone de olho. Isso altera o estado de publicação da categoria. Uma categoria não é exibida no aplicativo se o estado de publicação for "rascunho". Um indicador visual é exibido na categoria para mostrar o estado de publicação.
 

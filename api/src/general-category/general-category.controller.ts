@@ -10,9 +10,14 @@ import {
 } from '@nestjs/common';
 import { PageOptionsWithSearchDto } from 'src/common/dtos/page-options.dto';
 import { BasicResponseWrapper } from 'src/common/entities/basic-response-wrapper.entity';
-import { CreateGeneralCategoryDto } from './dto/create-general-category.dto';
+import {
+  CreateGeneralCategoryDto,
+  CreateGeneralCategoryResponseDto,
+} from './dto/create-general-category.dto';
 import { UpdateGeneralCategoryDto } from './dto/update-general-category.dto';
 import { GeneralCategoryService } from './general-category.service';
+import { ApiResponse, ApiSecurity } from '@nestjs/swagger';
+import { GeneralCategory } from 'db';
 
 @Controller('general-category')
 export class GeneralCategoryController {
@@ -20,6 +25,11 @@ export class GeneralCategoryController {
     private readonly generalCategoryService: GeneralCategoryService,
   ) {}
 
+  @ApiResponse({
+    status: 201,
+    description: 'Categoria geral criada com sucesso',
+    type: CreateGeneralCategoryResponseDto,
+  })
   @Post()
   async create(@Body() createGeneralCategoryDto: CreateGeneralCategoryDto) {
     return new BasicResponseWrapper({
